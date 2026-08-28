@@ -876,6 +876,141 @@ img {
 }
 
 /* =========================================
+   Social Feeds Section
+   ========================================= */
+.feeds-grid {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.feed-card {
+    flex: 1;
+    background-color: var(--bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.feed-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.feed-profile i {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.instagram-feed .feed-profile i {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.facebook-feed .feed-profile i {
+    background-color: #1877F2;
+}
+
+.feed-profile h4 {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.feed-profile p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.btn-follow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white !important;
+    transition: var(--transition);
+}
+
+.insta-btn {
+    background-color: #0095f6;
+}
+
+.insta-btn:hover {
+    background-color: #007bb5;
+}
+
+.fb-btn {
+    background-color: #e4e6eb;
+    color: #050505 !important;
+}
+
+.fb-btn:hover {
+    background-color: #d8dadf;
+}
+
+.fb-btn i {
+    color: #1877F2;
+}
+
+/* Insta Grid */
+.insta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    padding: 2px;
+}
+
+.insta-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.insta-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.insta-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Facebook Post */
+.fb-post {
+    padding: 0;
+}
+
+.fb-post-content {
+    padding: 20px;
+    font-size: 15px;
+}
+
+.fb-post-image img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+/* =========================================
    Animations
    ========================================= */
 @keyframes fadeUp {
@@ -908,7 +1043,8 @@ img {
     
     .about-container,
     .values-wrapper,
-    .contact-grid {
+    .contact-grid,
+    .feeds-grid {
         flex-direction: column;
         gap: 50px;
     }
