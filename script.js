@@ -103,3 +103,86 @@ function switchSocialTab(tabKey) {
         tabButtons[1]?.classList.add('active');
     }
 }
+
+// Hero Leaders Auto Slider
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.slider-dots .dot');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    const sliderSection = document.getElementById('home');
+    
+    if (!slides.length) return;
+    
+    let currentSlide = 0;
+    let slideInterval = null;
+    const slideDuration = 5000; // 5 saniye
+    
+    function showSlide(index) {
+        if (index >= slides.length) currentSlide = 0;
+        else if (index < 0) currentSlide = slides.length - 1;
+        else currentSlide = index;
+        
+        slides.forEach((slide, i) => {
+            if (i === currentSlide) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+        
+        dots.forEach((dot, i) => {
+            if (i === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+    
+    function startAutoSlide() {
+        stopAutoSlide();
+        slideInterval = setInterval(nextSlide, slideDuration);
+    }
+    
+    function stopAutoSlide() {
+        if (slideInterval) clearInterval(slideInterval);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            startAutoSlide();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            startAutoSlide();
+        });
+    }
+    
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            showSlide(i);
+            startAutoSlide();
+        });
+    });
+    
+    if (sliderSection) {
+        sliderSection.addEventListener('mouseenter', stopAutoSlide);
+        sliderSection.addEventListener('mouseleave', startAutoSlide);
+    }
+    
+    // Start auto slide
+    startAutoSlide();
+});

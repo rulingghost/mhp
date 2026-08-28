@@ -42,30 +42,126 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
+    <!-- Hero Slider Section -->
+    <section class="hero hero-slider-section" id="home">
         <div class="hero-pattern"></div>
-        <div class="container hero-container">
-            <div class="hero-content">
-                <div class="badge">
-                    <i class="fas fa-star-and-crescent"></i> 2028 Genel Seçimleri
-                </div>
-                <h1 class="hero-title">Önce Ülkem ve Milletim, <br><span class="text-primary">Sonra Partim ve Ben!</span></h1>
-                <p class="hero-subtitle">Milli bekamız, aydınlık geleceğimiz ve güçlü Türkiye ülküsü için; inançla, azimle, kararlılıkla yürüyoruz. Söz konusu vatansa gerisi teferruattır.</p>
-                <div class="hero-buttons">
-                    <a href="#vision" class="btn btn-primary">Projelerimizi İnceleyin</a>
-                    <a href="#about" class="btn btn-outline">Beni Tanıyın</a>
-                </div>
-                <div class="hero-social">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+        
+        <div class="hero-slides-wrapper" id="heroSlidesWrapper">
+            <!-- Slide 1: Gazi Mustafa Kemal Atatürk -->
+            <div class="hero-slide active">
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <div class="badge">
+                            <i class="fas fa-star-and-crescent"></i> Türkiye Cumhuriyeti'nin Kurucusu
+                        </div>
+                        <h1 class="hero-title">Gazi Mustafa Kemal <br><span class="text-primary">ATATÜRK</span></h1>
+                        <blockquote class="hero-quote">
+                            "Ne mutlu Türk'üm diyene! Türk çocuğu ecdadını tanıdıkça daha büyük işler yapmak için kendinde kuvvet bulacaktır."
+                        </blockquote>
+                        <p class="hero-subtitle">Milli bağımsızlık, milli şuur ve ilelebet payidar kalacak Türkiye Cumhuriyeti ülküsü.</p>
+                        <div class="hero-buttons">
+                            <a href="#about" class="btn btn-primary">Bizi Tanıyın</a>
+                            <a href="#vision" class="btn btn-outline">Vizyonumuz</a>
+                        </div>
+                    </div>
+                    <div class="hero-image-wrapper">
+                        <div class="hero-shape"></div>
+                        <div class="leader-portrait-frame">
+                            <img src="./assets/slider_ataturk.jpg" alt="Gazi Mustafa Kemal Atatürk" class="hero-image leader-slide-img">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="hero-image-wrapper">
-                <div class="hero-shape"></div>
-                <img src="./assets/foto.jpeg" alt="Uygar Oral ÖZTÜRK - MHP İstanbul İl Sekreter Yardımcısı" class="hero-image" id="candidateImage">
+
+            <!-- Slide 2: Başbuğ Alparslan Türkeş -->
+            <div class="hero-slide">
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <div class="badge">
+                            <i class="fas fa-flag"></i> MHP Kurucu Genel Başkanı
+                        </div>
+                        <h1 class="hero-title">Başbuğ Alparslan <br><span class="text-primary">TÜRKEŞ</span></h1>
+                        <blockquote class="hero-quote">
+                            "Hepiniz birer Türk Bayrağı'sınız. Bayrağı lekelemeyin, kirletmeyin, yere düşürmeyin. Cesaret, yüreklilik, eyleme atılmak demektir."
+                        </blockquote>
+                        <p class="hero-subtitle">Tavizsiz milliyetçilik, dokuz ışık doktrini ve kutlu ülkü yolunda sarsılmaz irade.</p>
+                        <div class="hero-buttons">
+                            <a href="#values" class="btn btn-primary">İlkelerimiz</a>
+                            <a href="#about" class="btn btn-outline">Hakkımızda</a>
+                        </div>
+                    </div>
+                    <div class="hero-image-wrapper">
+                        <div class="hero-shape"></div>
+                        <div class="leader-portrait-frame">
+                            <img src="./assets/slider_turkes.jpg" alt="Başbuğ Alparslan Türkeş" class="hero-image leader-slide-img">
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Slide 3: Bilge Lider Dr. Devlet Bahçeli -->
+            <div class="hero-slide">
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <div class="badge">
+                            <i class="fas fa-shield-alt"></i> Milliyetçi Hareket Partisi Genel Başkanı
+                        </div>
+                        <h1 class="hero-title">Lider Dr. Devlet <br><span class="text-primary">BAHÇELİ</span></h1>
+                        <blockquote class="hero-quote">
+                            "Önce ülkem ve milletim, sonra partim ve ben! Bizim vatan sevgimiz lafla değil; canla, başla ve fedakarlıkla ölçülür."
+                        </blockquote>
+                        <p class="hero-subtitle">Lider Ülke Türkiye, Cumhur İttifakı ve milletimizin bölünmez bekası için kutlu yürüyüş.</p>
+                        <div class="hero-buttons">
+                            <a href="#vision" class="btn btn-primary">Hedeflerimiz</a>
+                            <a href="#social" class="btn btn-outline">Canlı Faaliyetler</a>
+                        </div>
+                    </div>
+                    <div class="hero-image-wrapper">
+                        <div class="hero-shape"></div>
+                        <div class="leader-portrait-frame">
+                            <img src="./assets/slider_bahceli.jpg" alt="Dr. Devlet Bahçeli" class="hero-image leader-slide-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Uygar Oral ÖZTÜRK -->
+            <div class="hero-slide">
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <div class="badge">
+                            <i class="fas fa-user-tie"></i> MHP İstanbul İl Sekreter Yardımcısı
+                        </div>
+                        <h1 class="hero-title">Uygar Oral <br><span class="text-primary">ÖZTÜRK</span></h1>
+                        <blockquote class="hero-quote">
+                            "Liderimizin izinde, milletimizin hizmetinde; güçlü İstanbul ve büyük Türkiye ülküsü için durmadan, yorulmadan çalışıyoruz."
+                        </blockquote>
+                        <p class="hero-subtitle">Özel sektör yöneticiliği ve sivil toplum tecrübesiyle İstanbul'un ve davamızın emrinde.</p>
+                        <div class="hero-buttons">
+                            <a href="#about" class="btn btn-primary">Beni Tanıyın</a>
+                            <a href="#contact" class="btn btn-outline">İletişime Geçin</a>
+                        </div>
+                    </div>
+                    <div class="hero-image-wrapper">
+                        <div class="hero-shape"></div>
+                        <div class="leader-portrait-frame">
+                            <img src="./assets/foto.jpeg" alt="Uygar Oral Öztürk" class="hero-image leader-slide-img candidate-fit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <button class="slider-arrow slider-prev" id="sliderPrev" aria-label="Önceki Slayt"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-arrow slider-next" id="sliderNext" aria-label="Sonraki Slayt"><i class="fas fa-chevron-right"></i></button>
+        
+        <!-- Slider Dots -->
+        <div class="slider-dots" id="sliderDots">
+            <span class="dot active" data-slide="0" title="Atatürk"></span>
+            <span class="dot" data-slide="1" title="Başbuğ Türkeş"></span>
+            <span class="dot" data-slide="2" title="Lider Bahçeli"></span>
+            <span class="dot" data-slide="3" title="Uygar Oral Öztürk"></span>
         </div>
     </section>
 
