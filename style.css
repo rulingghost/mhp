@@ -986,10 +986,39 @@ img {
     font-size: 17px;
     font-weight: 700;
     color: #111;
-    margin-bottom: 2px;
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.handle-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.insta-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #444;
+    margin: 4px 0 6px 0;
+}
+
+.insta-bio {
+    font-size: 12px;
+    line-height: 1.35;
+    color: #333;
+}
+
+.bio-name {
+    font-weight: 700;
+    color: #111;
+}
+
+.bio-line {
+    color: #444;
+    margin: 1px 0;
 }
 
 .verified-badge {
