@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentSlide = 0;
     let slideInterval = null;
-    const slideDuration = 5000; // 5 saniye
+    const slideDuration = 4500; // 4.5 saniye otomatik geçiş
     
     function showSlide(index) {
         if (index >= slides.length) currentSlide = 0;
@@ -154,7 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function stopAutoSlide() {
-        if (slideInterval) clearInterval(slideInterval);
+        if (slideInterval) {
+            clearInterval(slideInterval);
+            slideInterval = null;
+        }
     }
     
     if (nextBtn) {
@@ -178,11 +181,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
     if (sliderSection) {
-        sliderSection.addEventListener('mouseenter', stopAutoSlide);
-        sliderSection.addEventListener('mouseleave', startAutoSlide);
+        sliderSection.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        sliderSection.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+                startAutoSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+                startAutoSlide();
+            }
+        }, { passive: true });
     }
     
-    // Start auto slide
+    // Start auto slide immediately
     startAutoSlide();
 });
