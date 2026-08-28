@@ -1233,11 +1233,21 @@ img {
     object-fit: cover;
 }
 
+.fb-post-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #65676b;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 8px;
+}
+
 .fb-post-actions {
     display: flex;
     justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    padding-top: 12px;
+    padding-top: 4px;
     margin-top: auto;
 }
 
