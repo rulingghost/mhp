@@ -84,3 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Social Tabs Switcher
+function switchSocialTab(tabKey) {
+    const tabUygar = document.getElementById('tab-uygar');
+    const tabIstanbul = document.getElementById('tab-istanbul');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    
+    if (tabKey === 'uygar') {
+        if(tabUygar) tabUygar.style.display = 'block';
+        if(tabIstanbul) tabIstanbul.style.display = 'none';
+        tabButtons[0]?.classList.add('active');
+        tabButtons[1]?.classList.remove('active');
+    } else {
+        if(tabUygar) tabUygar.style.display = 'none';
+        if(tabIstanbul) tabIstanbul.style.display = 'block';
+        tabButtons[0]?.classList.remove('active');
+        tabButtons[1]?.classList.add('active');
+    }
+}

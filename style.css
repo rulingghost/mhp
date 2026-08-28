@@ -878,9 +878,51 @@ img {
 /* =========================================
    Social Feeds Section
    ========================================= */
+.social-tabs {
+    display: inline-flex;
+    background: #e9ecef;
+    padding: 6px;
+    border-radius: 50px;
+    margin-top: 25px;
+    gap: 8px;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    border-radius: 40px;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.tab-btn.active {
+    background: var(--bg-white);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.tab-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.social-tab-content {
+    animation: fadeIn 0.4s ease;
+}
+
 .feeds-grid {
     display: flex;
-    gap: 40px;
+    gap: 35px;
     margin-top: 40px;
 }
 
@@ -891,47 +933,71 @@ img {
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .feed-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 18px 22px;
     border-bottom: 1px solid var(--border-color);
+    background: #fff;
 }
 
 .feed-profile {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
 }
 
-.feed-profile i {
-    width: 50px;
-    height: 50px;
+/* Instagram Story Ring */
+.insta-avatar-ring {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    color: white;
+    padding: 2.5px;
 }
 
-.instagram-feed .feed-profile i {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+.insta-avatar-ring.mhp-ring {
+    background: linear-gradient(45deg, #d1122a 0%, #ff4b5c 100%);
 }
 
-.facebook-feed .feed-profile i {
-    background-color: #1877F2;
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    background: white;
 }
 
-.feed-profile h4 {
-    font-size: 18px;
+.mhp-img-fit {
+    object-fit: contain;
+    padding: 2px;
+}
+
+.insta-handle {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
     margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.feed-profile p {
+.verified-badge {
+    color: #0095f6;
+    font-size: 14px;
+}
+
+.platform-name {
     font-size: 13px;
     color: var(--text-muted);
 }
@@ -941,7 +1007,7 @@ img {
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     color: white !important;
@@ -953,61 +1019,303 @@ img {
 }
 
 .insta-btn:hover {
-    background-color: #007bb5;
+    background-color: #0077c5;
 }
 
-.fb-btn {
-    background-color: #e4e6eb;
-    color: #050505 !important;
-}
-
-.fb-btn:hover {
-    background-color: #d8dadf;
-}
-
-.fb-btn i {
-    color: #1877F2;
-}
-
-/* Insta Grid */
-.insta-grid {
+/* Instagram 9-Grid (3x3) */
+.insta-grid-9 {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    padding: 2px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    background-color: #fafafa;
+    padding: 3px;
 }
 
 .insta-item {
     aspect-ratio: 1;
     overflow: hidden;
     position: relative;
+    display: block;
 }
 
 .insta-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .insta-item:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
-/* Facebook Post */
+.insta-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    font-size: 14px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+    z-index: 2;
+}
+
+.insta-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.insta-item:hover .insta-overlay {
+    opacity: 1;
+}
+
+.feed-footer {
+    padding: 16px;
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-insta-full {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background: #0095f6;
+    color: white !important;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.btn-insta-full:hover {
+    background: #0077c5;
+}
+
+/* Facebook Feed Card */
+.fb-page-header {
+    background: #f0f2f5;
+}
+
+.fb-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1877f2;
+}
+
+.fb-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #050505;
+}
+
+.fb-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #65676b;
+    margin-top: 2px;
+}
+
+.badge-fb {
+    background: #e4e6eb;
+    color: #050505;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.fb-btn {
+    background: #1877f2;
+}
+
+.fb-btn:hover {
+    background: #166fe5;
+}
+
 .fb-post {
-    padding: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.fb-post-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.fb-user-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.fb-post-user .user-name {
+    display: block;
+    font-weight: 700;
+    font-size: 15px;
+    color: #050505;
+}
+
+.fb-post-user .post-time {
+    display: block;
+    font-size: 12px;
+    color: #65676b;
 }
 
 .fb-post-content {
-    padding: 20px;
     font-size: 15px;
+    line-height: 1.5;
+    color: #050505;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    padding: 14px;
+    border-radius: 12px;
+    border-left: 4px solid #1877f2;
+}
+
+.fb-post-image {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    max-height: 280px;
 }
 
 .fb-post-image img {
     width: 100%;
-    max-height: 400px;
+    height: 100%;
     object-fit: cover;
+}
+
+.fb-post-actions {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+.fb-act-btn {
+    border: none;
+    background: transparent;
+    color: #65676b;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.fb-act-btn:hover {
+    color: #1877f2;
+}
+
+/* Twitter / X Feed Card */
+.twitter-header {
+    background: #000;
+    color: white;
+}
+
+.twitter-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: contain;
+    background: white;
+    padding: 2px;
+}
+
+.twitter-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+}
+
+.twitter-handle {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.x-btn {
+    background: white;
+    color: black !important;
+}
+
+.x-btn:hover {
+    background: #e6e6e6;
+}
+
+.twitter-post {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.tweet-content {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #0f1419;
+    margin-bottom: 15px;
+}
+
+.tweet-media {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: #fcfcfc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 240px;
+    margin-bottom: 15px;
+}
+
+.tweet-img {
+    max-height: 160px;
+    width: auto;
+    object-fit: contain;
+}
+
+.tweet-actions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+    color: #536471;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+.tweet-actions span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.tweet-actions span:hover {
+    color: var(--primary-color);
 }
 
 /* =========================================

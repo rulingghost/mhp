@@ -202,50 +202,214 @@
     <section class="social-feeds section-padding bg-light" id="social">
         <div class="container">
             <div class="section-header text-center">
-                <h5 class="section-subtitle">Sosyal Medya</h5>
-                <h2 class="section-title">Son Paylaşımlar & Faaliyetler</h2>
-                <p class="section-desc">Çalışmalarımızı ve güncel faaliyetlerimizi sosyal medya hesaplarımızdan takip edebilirsiniz.</p>
+                <h5 class="section-subtitle">Sosyal Medya Akışı</h5>
+                <h2 class="section-title">Canlı Faaliyetler & Son Paylaşımlar</h2>
+                <p class="section-desc">Gerek şahsi çalışmalarımızı gerekse MHP İstanbul İl Teşkilatımızın güncel saha faaliyetlerini sosyal medya akışlarımızdan anbean takip edebilirsiniz.</p>
+                
+                <!-- Social Tabs -->
+                <div class="social-tabs">
+                    <button class="tab-btn active" onclick="switchSocialTab('uygar')">
+                        <img src="./assets/foto.jpeg" alt="Uygar Oral Öztürk" class="tab-avatar">
+                        <span>Uygar Oral ÖZTÜRK</span>
+                    </button>
+                    <button class="tab-btn" onclick="switchSocialTab('istanbul')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP İstanbul" class="tab-avatar">
+                        <span>MHP İstanbul İl Başkanlığı</span>
+                    </button>
+                </div>
             </div>
             
-            <div class="feeds-grid">
-                <!-- Instagram Feed -->
-                <div class="feed-card instagram-feed">
-                    <div class="feed-header">
-                        <div class="feed-profile">
-                            <i class="fab fa-instagram"></i>
-                            <div>
-                                <h4>@uygaroral</h4>
-                                <p>Instagram</p>
+            <!-- Uygar Oral ÖZTÜRK Feeds -->
+            <div class="social-tab-content active" id="tab-uygar">
+                <div class="feeds-grid">
+                    <!-- Instagram Feed -->
+                    <div class="feed-card instagram-feed">
+                        <div class="feed-header">
+                            <div class="feed-profile">
+                                <div class="insta-avatar-ring">
+                                    <img src="./assets/foto.jpeg" alt="uygaroral" class="profile-img">
+                                </div>
+                                <div class="profile-meta">
+                                    <h4 class="insta-handle">uygaroral</h4>
+                                    <span class="platform-name">Instagram</span>
+                                </div>
+                            </div>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="btn-follow insta-btn"><i class="fab fa-instagram"></i> Takip Et</a>
+                        </div>
+                        <div class="insta-grid-9">
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="Uygar Oral Öztürk">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Miting">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="Teşkilat">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Toplantı">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ziyaret">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="Heyet">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="Görüşme">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Konferans">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Açıklama">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                        </div>
+                        <div class="feed-footer">
+                            <a href="https://instagram.com/uygaroral" target="_blank" class="btn-insta-full"><i class="fab fa-instagram"></i> Instagram'da Takip Et</a>
+                        </div>
+                    </div>
+
+                    <!-- Facebook Feed -->
+                    <div class="feed-card facebook-feed">
+                        <div class="feed-header fb-page-header">
+                            <div class="feed-profile">
+                                <img src="./assets/foto.jpeg" alt="Uygar Oral Öztürk" class="fb-avatar">
+                                <div>
+                                    <h4 class="fb-title">Uygar Oral Öztürk</h4>
+                                    <div class="fb-sub"><span class="badge-fb"><i class="fab fa-facebook-f"></i> Sayfayı Takip Et</span> <span class="followers-count">3,8 B takipçi</span></div>
+                                </div>
+                            </div>
+                            <a href="https://facebook.com/uygaroral" target="_blank" class="btn-follow fb-btn"><i class="fas fa-thumbs-up"></i> Beğen</a>
+                        </div>
+                        <div class="fb-post">
+                            <div class="fb-post-user">
+                                <img src="./assets/foto.jpeg" alt="Avatar" class="fb-user-thumb">
+                                <div>
+                                    <span class="user-name">Uygar Oral Öztürk</span>
+                                    <span class="post-time"><i class="far fa-clock"></i> Yakın zamanda paylaşıldı</span>
+                                </div>
+                            </div>
+                            <div class="fb-post-content">
+                                <p>"Ülkece geçtiğimiz sıkıntılı günler er yada bitecektir. Geçmeyecek olan ise kimin kimle yürüdüğü, kimin arka edinme telaşında olduğu, birilerine yaranma çabasıdır. Hepsini not ettik vesselam."</p>
+                            </div>
+                            <div class="fb-post-image">
+                                <img src="./assets/foto.jpeg" alt="Facebook Post">
+                            </div>
+                            <div class="fb-post-actions">
+                                <button class="fb-act-btn"><i class="far fa-thumbs-up"></i> Beğen (5)</button>
+                                <button class="fb-act-btn"><i class="far fa-comment"></i> Yorum Yap</button>
+                                <button class="fb-act-btn"><i class="far fa-share-square"></i> Paylaş</button>
                             </div>
                         </div>
-                        <a href="https://instagram.com/uygaroral" target="_blank" class="btn-follow insta-btn"><i class="fab fa-instagram"></i> Takip Et</a>
-                    </div>
-                    <div class="insta-grid">
-                        <div class="insta-item"><img src="./assets/foto.jpeg" alt="Post"></div>
-                        <div class="insta-item"><img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Post"></div>
-                        <div class="insta-item"><img src="./assets/foto.jpeg" alt="Post"></div>
-                        <div class="insta-item"><img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Post"></div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Facebook Feed -->
-                <div class="feed-card facebook-feed">
-                    <div class="feed-header">
-                        <div class="feed-profile">
-                            <i class="fab fa-facebook-f"></i>
-                            <div>
-                                <h4>Uygar Oral Öztürk</h4>
-                                <p>Facebook</p>
+            <!-- MHP İstanbul İl Başkanlığı Feeds -->
+            <div class="social-tab-content" id="tab-istanbul" style="display: none;">
+                <div class="feeds-grid">
+                    <!-- MHP Istanbul Instagram Feed -->
+                    <div class="feed-card instagram-feed">
+                        <div class="feed-header">
+                            <div class="feed-profile">
+                                <div class="insta-avatar-ring mhp-ring">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="mhpistanbul" class="profile-img mhp-img-fit">
+                                </div>
+                                <div class="profile-meta">
+                                    <h4 class="insta-handle">mhpistanbul <i class="fas fa-check-circle verified-badge"></i></h4>
+                                    <span class="platform-name">MHP İstanbul İl Başkanlığı</span>
+                                </div>
                             </div>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="btn-follow insta-btn"><i class="fab fa-instagram"></i> Takip Et</a>
                         </div>
-                        <a href="https://facebook.com/uygaroral" target="_blank" class="btn-follow fb-btn"><i class="fab fa-facebook-f"></i> Sayfayı Takip Et</a>
+                        <div class="insta-grid-9">
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP İstanbul">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="MHP Teşkilat">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="İl Yönetimi">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="İl Divan Toplantısı">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="Duyuru">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Saha Çalışmaları">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="./assets/foto.jpeg" alt="İlçe Ziyaretleri">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Basın Açıklaması">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="insta-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="Kutlu Yürüyüş">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                        </div>
+                        <div class="feed-footer">
+                            <a href="https://instagram.com/mhp.istanbul" target="_blank" class="btn-insta-full"><i class="fab fa-instagram"></i> Instagram'da Takip Et</a>
+                        </div>
                     </div>
-                    <div class="fb-post">
-                        <div class="fb-post-content">
-                            <p>"Ülkece geçtiğimiz sıkıntılı günler er ya da geç bitecektir. Geçmeyecek olan ise kimin kimle yürüdüğü, kimin arka edinme telaşında olduğu, birilerine yaranma çabasıdır. Hepsini not ettik vesselam."</p>
+
+                    <!-- MHP Istanbul X / Twitter & Facebook Feed -->
+                    <div class="feed-card twitter-feed">
+                        <div class="feed-header twitter-header">
+                            <div class="feed-profile">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP İstanbul" class="twitter-avatar">
+                                <div>
+                                    <h4 class="twitter-title">MHP İstanbul <i class="fas fa-check-circle verified-badge"></i></h4>
+                                    <span class="twitter-handle">@mhpistanbul • Resmi Hesap</span>
+                                </div>
+                            </div>
+                            <a href="https://twitter.com/mhpistanbul" target="_blank" class="btn-follow x-btn"><i class="fab fa-x-twitter"></i> Takip Et</a>
                         </div>
-                        <div class="fb-post-image">
-                            <img src="./assets/foto.jpeg" alt="Facebook Post">
+                        <div class="twitter-post">
+                            <div class="tweet-content">
+                                <p>Milliyetçi Hareket Partisi İstanbul İl Başkanlığı olarak; Liderimiz Sn. Devlet Bahçeli'nin emrinde, kutlu davamızın ve aziz milletimizin hizmetinde kararlılıkla yürümeye devam ediyoruz. 🇹🇷<br><br><strong>#MHP #İstanbul #LiderÜlkeTürkiye</strong></p>
+                            </div>
+                            <div class="tweet-media">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP İl Başkanlığı" class="tweet-img">
+                            </div>
+                            <div class="tweet-actions">
+                                <span><i class="far fa-comment"></i> 142</span>
+                                <span><i class="fas fa-retweet"></i> 875</span>
+                                <span><i class="far fa-heart"></i> 3.4K</span>
+                                <span><i class="far fa-bookmark"></i></span>
+                            </div>
                         </div>
                     </div>
                 </div>
