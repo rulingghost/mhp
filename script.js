@@ -104,19 +104,41 @@ function switchSocialTab(tabKey) {
     }
 }
 
-// Hero Leaders Auto Slider
+// Hero Slider - Dynamic & Modular
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.slider-dots .dot');
+    const slidesWrapper = document.getElementById('heroSlidesWrapper');
+    const dotsContainer = document.getElementById('sliderDots');
     const prevBtn = document.getElementById('sliderPrev');
     const nextBtn = document.getElementById('sliderNext');
     const sliderSection = document.getElementById('home');
     
+    if (!slidesWrapper) return;
+    
+    const slides = slidesWrapper.querySelectorAll('.hero-slide');
     if (!slides.length) return;
     
     let currentSlide = 0;
     let slideInterval = null;
-    const slideDuration = 4500; // 4.5 saniye otomatik geçiş
+    const slideDuration = 5000; // 5 saniye otomatik geçiş
+    
+    // Dynamically build / sync dots based on slide count
+    if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        slides.forEach((slide, idx) => {
+            const dot = document.createElement('span');
+            dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+            dot.dataset.slide = idx;
+            const slideTitle = slide.querySelector('.hero-title')?.innerText.replace(/\s+/g, ' ').trim() || `Slayt ${idx + 1}`;
+            dot.title = slideTitle;
+            dot.addEventListener('click', () => {
+                showSlide(idx);
+                startAutoSlide();
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+    
+    const dots = dotsContainer ? dotsContainer.querySelectorAll('.dot') : [];
     
     function showSlide(index) {
         if (index >= slides.length) currentSlide = 0;
@@ -174,18 +196,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-            showSlide(i);
-            startAutoSlide();
-        });
-    });
-    
-    // Touch swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
+    // Pause on hover
     if (sliderSection) {
+        sliderSection.addEventListener('mouseenter', stopAutoSlide);
+        sliderSection.addEventListener('mouseleave', startAutoSlide);
+        
+        // Touch swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
         sliderSection.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
         }, { passive: true });
@@ -202,6 +221,667 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
     
-    // Start auto slide immediately
+    // Initialize
+    showSlide(0);
     startAutoSlide();
+});
+
+// Vision & Projects (Hedeflerimiz) Carousel Slider
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('projectsCarousel');
+    const viewport = document.getElementById('projectsViewport');
+    const track = document.getElementById('projectsTrack');
+    const prevBtn = document.getElementById('projectsPrev');
+    const nextBtn = document.getElementById('projectsNext');
+    const dotsContainer = document.getElementById('projectsDots');
+    
+    if (!container || !viewport || !track) return;
+    
+    const cards = track.querySelectorAll('.project-card');
+    if (!cards.length) return;
+    
+    let currentIndex = 0;
+    let maxIndex = 0;
+    let cardStep = 0;
+    let autoPlayTimer = null;
+    const autoPlayInterval = 4500;
+    
+    function calculateMetrics() {
+        const viewportWidth = viewport.clientWidth;
+        const firstCard = cards[0];
+        const cardWidth = firstCard.offsetWidth;
+        const gap = parseInt(window.getComputedStyle(track).gap) || 24;
+        cardStep = cardWidth + gap;
+        
+        // Number of visible cards at a time
+        const visibleCards = Math.max(1, Math.floor((viewportWidth + gap) / cardStep));
+        maxIndex = Math.max(0, cards.length - visibleCards);
+        
+        if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+        }
+        
+        renderDots();
+        updateSliderPosition(false);
+    }
+    
+    function renderDots() {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        const totalDots = maxIndex + 1;
+        
+        for (let i = 0; i < totalDots; i++) {
+            const dot = document.createElement('span');
+            dot.className = `p-dot ${i === currentIndex ? 'active' : ''}`;
+            dot.dataset.index = i;
+            dot.title = `Hedef Grubu ${i + 1}`;
+            dot.addEventListener('click', () => {
+                goToIndex(i);
+                startAutoPlay();
+            });
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    function updateDots() {
+        if (!dotsContainer) return;
+        const dots = dotsContainer.querySelectorAll('.p-dot');
+        dots.forEach((dot, i) => {
+            if (i === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    function updateSliderPosition(animate = true) {
+        if (!animate) {
+            track.style.transition = 'none';
+        } else {
+            track.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+        }
+        
+        const offset = currentIndex * cardStep;
+        track.style.transform = `translateX(-${offset}px)`;
+        
+        if (prevBtn) {
+            prevBtn.classList.toggle('disabled', currentIndex === 0);
+        }
+        if (nextBtn) {
+            nextBtn.classList.toggle('disabled', currentIndex >= maxIndex);
+        }
+        
+        updateDots();
+    }
+    
+    function goToIndex(index) {
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateSliderPosition(true);
+    }
+    
+    function nextProjects() {
+        if (currentIndex >= maxIndex) {
+            goToIndex(0);
+        } else {
+            goToIndex(currentIndex + 1);
+        }
+    }
+    
+    function prevProjects() {
+        if (currentIndex <= 0) {
+            goToIndex(maxIndex);
+        } else {
+            goToIndex(currentIndex - 1);
+        }
+    }
+    
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(nextProjects, autoPlayInterval);
+    }
+    
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextProjects();
+            startAutoPlay();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevProjects();
+            startAutoPlay();
+        });
+    }
+    
+    // Pause on hover
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+    
+    // Drag and Touch Support
+    let isDragging = false;
+    let startX = 0;
+    
+    viewport.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        stopAutoPlay();
+        track.style.transition = 'none';
+    });
+    
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const currentX = e.clientX;
+        const diffX = currentX - startX;
+        const baseOffset = currentIndex * cardStep;
+        track.style.transform = `translateX(-${baseOffset - diffX}px)`;
+    });
+    
+    window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = e.clientX - startX;
+        if (diffX < -50 && currentIndex < maxIndex) {
+            goToIndex(currentIndex + 1);
+        } else if (diffX > 50 && currentIndex > 0) {
+            goToIndex(currentIndex - 1);
+        } else {
+            goToIndex(currentIndex);
+        }
+        startAutoPlay();
+    });
+    
+    // Touch events for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    viewport.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+    }, { passive: true });
+    
+    viewport.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (diff > 50) {
+            nextProjects();
+        } else if (diff < -50) {
+            prevProjects();
+        }
+        startAutoPlay();
+    }, { passive: true });
+    
+    // Window resize handler with debounce
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            calculateMetrics();
+        }, 150);
+    });
+    
+    // Initial calculation and start
+    calculateMetrics();
+    startAutoPlay();
+});
+
+// Values & Principles (İlkelerimiz) Carousel Slider
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('valuesCarousel');
+    const viewport = document.getElementById('valuesViewport');
+    const track = document.getElementById('valuesTrack');
+    const prevBtn = document.getElementById('valuesPrev');
+    const nextBtn = document.getElementById('valuesNext');
+    const dotsContainer = document.getElementById('valuesDots');
+    
+    if (!container || !viewport || !track) return;
+    
+    const cards = track.querySelectorAll('.value-card');
+    if (!cards.length) return;
+    
+    let currentIndex = 0;
+    let maxIndex = 0;
+    let cardStep = 0;
+    let autoPlayTimer = null;
+    const autoPlayInterval = 5000;
+    
+    function calculateMetrics() {
+        const viewportWidth = viewport.clientWidth;
+        const firstCard = cards[0];
+        const cardWidth = firstCard.offsetWidth;
+        const gap = parseInt(window.getComputedStyle(track).gap) || 24;
+        cardStep = cardWidth + gap;
+        
+        // Number of visible cards at a time
+        const visibleCards = Math.max(1, Math.floor((viewportWidth + gap) / cardStep));
+        maxIndex = Math.max(0, cards.length - visibleCards);
+        
+        if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+        }
+        
+        renderDots();
+        updateSliderPosition(false);
+    }
+    
+    function renderDots() {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = '';
+        const totalDots = maxIndex + 1;
+        
+        for (let i = 0; i < totalDots; i++) {
+            const dot = document.createElement('span');
+            dot.className = `v-dot ${i === currentIndex ? 'active' : ''}`;
+            dot.dataset.index = i;
+            dot.title = `İlke Grubu ${i + 1}`;
+            dot.addEventListener('click', () => {
+                goToIndex(i);
+                startAutoPlay();
+            });
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    function updateDots() {
+        if (!dotsContainer) return;
+        const dots = dotsContainer.querySelectorAll('.v-dot');
+        dots.forEach((dot, i) => {
+            if (i === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    function updateSliderPosition(animate = true) {
+        if (!animate) {
+            track.style.transition = 'none';
+        } else {
+            track.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+        }
+        
+        const offset = currentIndex * cardStep;
+        track.style.transform = `translateX(-${offset}px)`;
+        
+        if (prevBtn) {
+            prevBtn.classList.toggle('disabled', currentIndex === 0);
+        }
+        if (nextBtn) {
+            nextBtn.classList.toggle('disabled', currentIndex >= maxIndex);
+        }
+        
+        updateDots();
+    }
+    
+    function goToIndex(index) {
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateSliderPosition(true);
+    }
+    
+    function nextValues() {
+        if (currentIndex >= maxIndex) {
+            goToIndex(0);
+        } else {
+            goToIndex(currentIndex + 1);
+        }
+    }
+    
+    function prevValues() {
+        if (currentIndex <= 0) {
+            goToIndex(maxIndex);
+        } else {
+            goToIndex(currentIndex - 1);
+        }
+    }
+    
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(nextValues, autoPlayInterval);
+    }
+    
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextValues();
+            startAutoPlay();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevValues();
+            startAutoPlay();
+        });
+    }
+    
+    // Pause on hover
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+    
+    // Drag and Touch Support
+    let isDragging = false;
+    let startX = 0;
+    
+    viewport.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        stopAutoPlay();
+        track.style.transition = 'none';
+    });
+    
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const currentX = e.clientX;
+        const diffX = currentX - startX;
+        const baseOffset = currentIndex * cardStep;
+        track.style.transform = `translateX(-${baseOffset - diffX}px)`;
+    });
+    
+    window.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = e.clientX - startX;
+        if (diffX < -50 && currentIndex < maxIndex) {
+            goToIndex(currentIndex + 1);
+        } else if (diffX > 50 && currentIndex > 0) {
+            goToIndex(currentIndex - 1);
+        } else {
+            goToIndex(currentIndex);
+        }
+        startAutoPlay();
+    });
+    
+    // Touch events for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    viewport.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+    }, { passive: true });
+    
+    viewport.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (diff > 50) {
+            nextValues();
+        } else if (diff < -50) {
+            prevValues();
+        }
+        startAutoPlay();
+    }, { passive: true });
+    
+    // Window resize handler with debounce
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            calculateMetrics();
+        }, 150);
+    });
+    
+    // Initial calculation and start
+    calculateMetrics();
+    startAutoPlay();
+});
+
+// Photo Gallery (Bento Filter & Lightbox Modal)
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.gallery-filter-btn');
+    const bentoItems = Array.from(document.querySelectorAll('.gallery-bento-item'));
+    const modal = document.getElementById('imageLightboxModal');
+    const backdrop = document.getElementById('lightboxBackdrop');
+    const closeBtn = document.getElementById('lightboxCloseBtn');
+    const prevBtn = document.getElementById('lightboxPrevBtn');
+    const nextBtn = document.getElementById('lightboxNextBtn');
+    const lightboxImg = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDesc = document.getElementById('lightboxDesc');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    
+    if (!bentoItems.length || !modal) return;
+    
+    let visibleItems = [...bentoItems];
+    let currentImgIndex = 0;
+    
+    // Filtering
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const filter = btn.getAttribute('data-filter');
+            visibleItems = [];
+            
+            bentoItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    item.classList.remove('hide');
+                    visibleItems.push(item);
+                } else {
+                    item.classList.add('hide');
+                }
+            });
+        });
+    });
+    
+    // Open Lightbox
+    function openLightbox(index) {
+        if (!visibleItems[index]) return;
+        currentImgIndex = index;
+        const item = visibleItems[index];
+        const src = item.getAttribute('data-src') || item.querySelector('img')?.src;
+        const title = item.getAttribute('data-title') || 'Fotoğraf';
+        const desc = item.getAttribute('data-desc') || '';
+        
+        lightboxImg.src = src;
+        lightboxTitle.innerText = title;
+        lightboxDesc.innerText = desc;
+        lightboxCounter.innerText = `${currentImgIndex + 1} / ${visibleItems.length}`;
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    function nextImage() {
+        if (visibleItems.length === 0) return;
+        const nextIdx = (currentImgIndex + 1) % visibleItems.length;
+        openLightbox(nextIdx);
+    }
+    
+    function prevImage() {
+        if (visibleItems.length === 0) return;
+        const prevIdx = (currentImgIndex - 1 + visibleItems.length) % visibleItems.length;
+        openLightbox(prevIdx);
+    }
+    
+    bentoItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const index = visibleItems.indexOf(item);
+            if (index !== -1) {
+                openLightbox(index);
+            }
+        });
+    });
+    
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    if (backdrop) backdrop.addEventListener('click', closeLightbox);
+    if (nextBtn) nextBtn.addEventListener('click', nextImage);
+    if (prevBtn) prevBtn.addEventListener('click', prevImage);
+    
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+    });
+});
+
+// Video Gallery (Cinema Player & Video Modal)
+document.addEventListener('DOMContentLoaded', () => {
+    const mainStage = document.getElementById('cinemaMainStage');
+    const mainThumb = document.getElementById('cinemaMainThumb');
+    const mainTitle = document.getElementById('cinemaMainTitle');
+    const mainDesc = document.getElementById('cinemaMainDesc');
+    const playBtn = document.getElementById('cinemaMainPlayBtn');
+    const playlistCards = document.querySelectorAll('.playlist-card');
+    
+    const videoModal = document.getElementById('videoPlayerModal');
+    const videoBackdrop = document.getElementById('videoModalBackdrop');
+    const videoCloseBtn = document.getElementById('videoModalCloseBtn');
+    const modalTitle = document.getElementById('videoModalTitle');
+    const modalDesc = document.getElementById('videoModalDesc');
+    const demoThumb = document.getElementById('demoVideoThumb');
+    const modalDuration = document.getElementById('demoModalDuration');
+    
+    if (!mainStage || !playlistCards.length) return;
+    
+    let activeVideoData = {
+        title: playlistCards[0].getAttribute('data-title'),
+        desc: playlistCards[0].getAttribute('data-desc'),
+        thumb: playlistCards[0].getAttribute('data-thumb'),
+        duration: playlistCards[0].getAttribute('data-duration') || '12:45'
+    };
+    
+    playlistCards.forEach(card => {
+        card.addEventListener('click', () => {
+            playlistCards.forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            
+            const title = card.getAttribute('data-title');
+            const desc = card.getAttribute('data-desc');
+            const thumb = card.getAttribute('data-thumb');
+            const duration = card.getAttribute('data-duration') || '10:00';
+            
+            activeVideoData = { title, desc, thumb, duration };
+            
+            if (mainTitle) mainTitle.innerText = title;
+            if (mainDesc) mainDesc.innerText = desc;
+            if (mainThumb) mainThumb.src = thumb;
+        });
+    });
+    
+    function openVideoModal() {
+        if (!videoModal) return;
+        if (modalTitle) modalTitle.innerText = activeVideoData.title;
+        if (modalDesc) modalDesc.innerText = activeVideoData.desc;
+        if (demoThumb) demoThumb.src = activeVideoData.thumb;
+        if (modalDuration) modalDuration.innerText = activeVideoData.duration;
+        
+        videoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeVideoModal() {
+        if (!videoModal) return;
+        videoModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    if (playBtn) playBtn.addEventListener('click', openVideoModal);
+    if (mainStage) mainStage.addEventListener('click', (e) => {
+        if (e.target !== playBtn && !playBtn.contains(e.target)) openVideoModal();
+    });
+    
+    if (videoCloseBtn) videoCloseBtn.addEventListener('click', closeVideoModal);
+    if (videoBackdrop) videoBackdrop.addEventListener('click', closeVideoModal);
+    
+    window.addEventListener('keydown', (e) => {
+        if (videoModal && videoModal.classList.contains('active') && e.key === 'Escape') {
+            closeVideoModal();
+        }
+    });
+});
+
+// Contact Form & Ben Robot Değilim Captcha Handling
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    const captchaWrapper = document.getElementById('captchaWrapper');
+    const captchaBox = document.getElementById('captchaBox');
+    const captchaTrigger = document.getElementById('captchaTrigger');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    const successAlert = document.getElementById('formSuccessAlert');
+    
+    if (!contactForm || !captchaTrigger) return;
+    
+    let isCaptchaVerified = false;
+    let isCaptchaLoading = false;
+    
+    // Captcha Click Simulation
+    captchaTrigger.addEventListener('click', () => {
+        if (isCaptchaVerified || isCaptchaLoading) return;
+        
+        // Clear errors
+        captchaBox.classList.remove('error');
+        captchaWrapper.classList.remove('show-error');
+        
+        // Start loading
+        isCaptchaLoading = true;
+        captchaBox.classList.add('loading');
+        
+        // Simulate realistic verification delay
+        setTimeout(() => {
+            isCaptchaLoading = false;
+            isCaptchaVerified = true;
+            captchaBox.classList.remove('loading');
+            captchaBox.classList.add('verified');
+        }, 750);
+    });
+    
+    // Form Submission
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (!isCaptchaVerified) {
+            captchaBox.classList.remove('error');
+            void captchaBox.offsetWidth; // Force reflow to retrigger animation
+            captchaBox.classList.add('error');
+            captchaWrapper.classList.add('show-error');
+            return;
+        }
+        
+        // Successful verification - Simulate sending
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gönderiliyor...';
+        
+        setTimeout(() => {
+            contactForm.reset();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+            
+            // Reset captcha
+            isCaptchaVerified = false;
+            captchaBox.classList.remove('verified');
+            
+            // Show success alert
+            if (successAlert) {
+                successAlert.classList.add('show');
+                setTimeout(() => {
+                    successAlert.classList.remove('show');
+                }, 6000);
+            }
+        }, 900);
+    });
 });
