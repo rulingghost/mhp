@@ -1579,6 +1579,8 @@ img {
    ========================================= */
 .social-tabs {
     display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
     background: #e9ecef;
     padding: 6px;
     border-radius: 50px;

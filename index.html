@@ -477,11 +477,15 @@
                 
                 <!-- Social Tabs -->
                 <div class="social-tabs">
-                    <button class="tab-btn active" onclick="switchSocialTab('uygar')">
+                    <button class="tab-btn active" data-tab="uygar" onclick="switchSocialTab('uygar')">
                         <img src="./assets/foto.jpeg" alt="Uygar Oral Öztürk" class="tab-avatar">
                         <span>Uygar Oral ÖZTÜRK</span>
                     </button>
-                    <button class="tab-btn" onclick="switchSocialTab('istanbul')">
+                    <button class="tab-btn" data-tab="genelmerkez" onclick="switchSocialTab('genelmerkez')">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP Genel Merkezi" class="tab-avatar">
+                        <span>MHP Genel Merkezi</span>
+                    </button>
+                    <button class="tab-btn" data-tab="istanbul" onclick="switchSocialTab('istanbul')">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP İstanbul" class="tab-avatar">
                         <span>MHP İstanbul İl Başkanlığı</span>
                     </button>
@@ -594,6 +598,124 @@
                             <div class="fb-post-stats">
                                 <span class="likes-count"><i class="fas fa-thumbs-up text-primary"></i> 98</span>
                                 <span class="cmt-count">9 Yorum • 6 Paylaşım</span>
+                            </div>
+                            <div class="fb-post-actions">
+                                <button class="fb-act-btn"><i class="far fa-thumbs-up"></i> Beğen</button>
+                                <button class="fb-act-btn"><i class="far fa-comment"></i> Yorum Yap</button>
+                                <button class="fb-act-btn"><i class="far fa-share-square"></i> Paylaş</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MHP Genel Merkezi Feeds -->
+            <div class="social-tab-content" id="tab-genelmerkez" style="display: none;">
+                <div class="feeds-grid">
+                    <!-- Instagram Feed (MHP Genel Merkezi) -->
+                    <div class="feed-card instagram-feed">
+                        <div class="feed-header insta-full-header">
+                            <div class="feed-profile">
+                                <div class="insta-avatar-ring mhp-ring">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="mhpbilgi" class="profile-img mhp-img-fit">
+                                </div>
+                                <div class="profile-meta">
+                                    <div class="handle-row">
+                                        <h4 class="insta-handle">mhpbilgi</h4>
+                                        <i class="fas fa-check-circle verified-badge"></i>
+                                    </div>
+                                    <div class="insta-stats">
+                                        <span><strong>1.2M</strong> takipçi</span>
+                                        <span><strong>12</strong> takip</span>
+                                        <span><strong>4.850</strong> gönderi</span>
+                                    </div>
+                                    <div class="insta-bio">
+                                        <p class="bio-name">Milliyetçi Hareket Partisi 🇹🇷</p>
+                                        <p class="bio-line">MHP Genel Merkezi Resmi Instagram Hesabı</p>
+                                        <p class="bio-line"><a href="https://www.mhp.org.tr" target="_blank" style="color: #0095f6; text-decoration: none;">www.mhp.org.tr</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="btn-follow insta-btn"><i class="fab fa-instagram"></i> Takip Et</a>
+                        </div>
+                        <div class="insta-grid-9">
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_1.jpg" alt="Cumhurbaşkanlığı Külliyesi Merasimi">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_2.jpg" alt="Sayın Devlet Bahçeli Karşılama">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_3.jpg" alt="MHP Heyeti Anıtkabir Ziyareti">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_4.jpg" alt="Lider Devlet Bahçeli">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_5.jpg" alt="30 Ağustos Zafer Bayramı Kutlu Olsun">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_6.jpg" alt="Bu Vatan Üzerinde Son Söz Türk Milletinindir">
+                                <div class="insta-badge"><i class="fas fa-clone"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_7.jpg" alt="Türk Ordusu Zaferin Ardından">
+                                <div class="insta-badge"><i class="fas fa-play"></i></div>
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_8.jpg" alt="30 Ağustos Zafer Bayramımız Kutlu Olsun">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="insta-item">
+                                <img src="./assets/mhp_gm_grid9_9.jpg" alt="Liderimiz Devlet Bahçeli Hitabı">
+                                <div class="insta-overlay"><i class="fas fa-heart"></i></div>
+                            </a>
+                        </div>
+                        <div class="feed-footer">
+                            <a href="https://www.instagram.com/mhpbilgi" target="_blank" class="btn-insta-full"><i class="fab fa-instagram"></i> @mhpbilgi Instagram'da Takip Et</a>
+                        </div>
+                    </div>
+
+                    <!-- Facebook Feed (MHP Genel Merkezi) -->
+                    <div class="feed-card facebook-feed">
+                        <div class="feed-header fb-page-header">
+                            <div class="feed-profile">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP Genel Merkezi" class="fb-avatar" style="object-fit: contain; padding: 2px;">
+                                <div>
+                                    <h4 class="fb-title">Milliyetçi Hareket Partisi (MHP) <i class="fas fa-check-circle verified-badge" style="color: #1877f2; font-size: 14px;"></i></h4>
+                                    <div class="fb-sub"><span class="badge-fb"><i class="fab fa-facebook-f"></i> Resmi Sayfa</span> <span class="followers-count">1,8 M takipçi</span></div>
+                                </div>
+                            </div>
+                            <a href="https://www.facebook.com/milliyethareketpartisi" target="_blank" class="btn-follow fb-btn"><i class="fas fa-thumbs-up"></i> Beğen</a>
+                        </div>
+                        <div class="fb-post">
+                            <div class="fb-post-user">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP" class="fb-user-thumb" style="object-fit: contain;">
+                                <div>
+                                    <span class="user-name">Milliyetçi Hareket Partisi (MHP) <i class="fas fa-check-circle" style="color: #1877f2; font-size: 13px;"></i></span>
+                                    <span class="post-time">18s · <i class="fas fa-globe-americas"></i></span>
+                                </div>
+                            </div>
+                            <div class="fb-post-content">
+                                <p>Genel Başkanımız Sayın Devlet BAHÇELİ, Cumhurbaşkanlığı Külliyesi'nde düzenlenen 30 Ağustos Zafer Bayramı Özel Programı'na katıldı.</p>
+                            </div>
+                            <div class="fb-post-image" style="max-height: none;">
+                                <img src="./assets/mhp_gm_fb_post.jpg" alt="Cumhurbaşkanlığı Külliyesi 30 Ağustos Zafer Bayramı Özel Programı" style="width: 100%; height: auto; border-radius: 8px;">
+                            </div>
+                            <div class="fb-post-stats">
+                                <span class="likes-count"><i class="fas fa-thumbs-up text-primary" style="background: #1877f2; color: white; border-radius: 50%; padding: 4px; font-size: 11px;"></i> 2,2 B</span>
+                                <span class="cmt-count">87 Yorum · 269 Paylaşım</span>
                             </div>
                             <div class="fb-post-actions">
                                 <button class="fb-act-btn"><i class="far fa-thumbs-up"></i> Beğen</button>

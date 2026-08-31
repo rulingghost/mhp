@@ -87,20 +87,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Social Tabs Switcher
 function switchSocialTab(tabKey) {
-    const tabUygar = document.getElementById('tab-uygar');
-    const tabIstanbul = document.getElementById('tab-istanbul');
-    const tabButtons = document.querySelectorAll('.tab-btn');
+    const allTabs = document.querySelectorAll('.social-tab-content');
+    const allButtons = document.querySelectorAll('.tab-btn');
     
-    if (tabKey === 'uygar') {
-        if(tabUygar) tabUygar.style.display = 'block';
-        if(tabIstanbul) tabIstanbul.style.display = 'none';
-        tabButtons[0]?.classList.add('active');
-        tabButtons[1]?.classList.remove('active');
-    } else {
-        if(tabUygar) tabUygar.style.display = 'none';
-        if(tabIstanbul) tabIstanbul.style.display = 'block';
-        tabButtons[0]?.classList.remove('active');
-        tabButtons[1]?.classList.add('active');
+    allTabs.forEach(tab => {
+        tab.style.display = 'none';
+        tab.classList.remove('active');
+    });
+    
+    allButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-tab') === tabKey) {
+            btn.classList.add('active');
+        }
+    });
+    
+    const targetTab = document.getElementById(`tab-${tabKey}`);
+    if (targetTab) {
+        targetTab.style.display = 'block';
+        targetTab.classList.add('active');
     }
 }
 
