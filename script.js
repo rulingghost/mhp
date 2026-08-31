@@ -640,102 +640,218 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoPlay();
 });
 
-// Photo Gallery (Bento Filter & Lightbox Modal)
+// Photo Gallery (Bento Carousel, Filtering & Lightbox Modal)
 document.addEventListener('DOMContentLoaded', () => {
-    const filterBtns = document.querySelectorAll('.gallery-filter-btn');
+    const container = document.getElementById('galleryCarousel');
+    const viewport = document.getElementById('galleryViewport');
+    const track = document.getElementById('galleryTrack');
+    const prevBtn = document.getElementById('galleryPrev');
+    const nextBtn = document.getElementById('galleryNext');
+    const dotsContainer = document.getElementById('galleryDots');
+    const slides = Array.from(document.querySelectorAll('.gallery-bento-slide'));
     const bentoItems = Array.from(document.querySelectorAll('.gallery-bento-item'));
+    const filterBtns = document.querySelectorAll('.gallery-filter-btn');
+    
+    // Lightbox elements
     const modal = document.getElementById('imageLightboxModal');
     const backdrop = document.getElementById('lightboxBackdrop');
     const closeBtn = document.getElementById('lightboxCloseBtn');
-    const prevBtn = document.getElementById('lightboxPrevBtn');
-    const nextBtn = document.getElementById('lightboxNextBtn');
+    const lightboxPrev = document.getElementById('lightboxPrevBtn');
+    const lightboxNext = document.getElementById('lightboxNextBtn');
     const lightboxImg = document.getElementById('lightboxImage');
     const lightboxTitle = document.getElementById('lightboxTitle');
     const lightboxDesc = document.getElementById('lightboxDesc');
     const lightboxCounter = document.getElementById('lightboxCounter');
     
-    if (!bentoItems.length || !modal) return;
+    if (!container || !track || !slides.length) return;
     
-    let visibleItems = [...bentoItems];
-    let currentImgIndex = 0;
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    let autoPlayTimer = null;
     
-    // Filtering
+    // Create Dots
+    if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('span');
+            dot.className = `gallery-dot ${idx === 0 ? 'active' : ''}`;
+            dot.setAttribute('data-slide', idx);
+            dot.addEventListener('click', () => {
+                goToSlide(idx);
+                startAutoPlay();
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+    
+    function updateDots() {
+        if (!dotsContainer) return;
+        const dots = dotsContainer.querySelectorAll('.gallery-dot');
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentSlide);
+        });
+    }
+    
+    function goToSlide(index) {
+        currentSlide = (index + totalSlides) % totalSlides;
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        updateDots();
+    }
+    
+    function nextSlide() {
+        goToSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+        goToSlide(currentSlide - 1);
+    }
+    
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayTimer = setInterval(nextSlide, 5000);
+    }
+    
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            startAutoPlay();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            startAutoPlay();
+        });
+    }
+    
+    container.addEventListener('mouseenter', stopAutoPlay);
+    container.addEventListener('mouseleave', startAutoPlay);
+    
+    // Touch & Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    if (viewport) {
+        viewport.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoPlay();
+        }, { passive: true });
+        
+        viewport.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (diff > 50) {
+                nextSlide();
+            } else if (diff < -50) {
+                prevSlide();
+            }
+            startAutoPlay();
+        }, { passive: true });
+    }
+    
+    // Filter Buttons Interaction
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
             const filter = btn.getAttribute('data-filter');
-            visibleItems = [];
-            
-            bentoItems.forEach(item => {
-                const category = item.getAttribute('data-category');
-                if (filter === 'all' || category === filter) {
-                    item.classList.remove('hide');
-                    visibleItems.push(item);
-                } else {
-                    item.classList.add('hide');
+            if (filter === 'all') {
+                goToSlide(0);
+                bentoItems.forEach(item => item.style.opacity = '1');
+            } else {
+                let targetSlideIdx = -1;
+                slides.forEach((slide, idx) => {
+                    const match = slide.querySelector(`[data-category="${filter}"]`);
+                    if (match && targetSlideIdx === -1) {
+                        targetSlideIdx = idx;
+                    }
+                });
+                
+                if (targetSlideIdx !== -1) {
+                    goToSlide(targetSlideIdx);
                 }
-            });
+                
+                bentoItems.forEach(item => {
+                    const cat = item.getAttribute('data-category');
+                    if (cat === filter) {
+                        item.style.opacity = '1';
+                    } else {
+                        item.style.opacity = '0.35';
+                    }
+                });
+                
+                setTimeout(() => {
+                    bentoItems.forEach(item => item.style.opacity = '1');
+                }, 2500);
+            }
+            startAutoPlay();
         });
     });
     
-    // Open Lightbox
+    // Lightbox Logic
+    let currentLightboxIdx = 0;
+    
     function openLightbox(index) {
-        if (!visibleItems[index]) return;
-        currentImgIndex = index;
-        const item = visibleItems[index];
+        if (!bentoItems[index] || !modal) return;
+        currentLightboxIdx = index;
+        const item = bentoItems[index];
         const src = item.getAttribute('data-src') || item.querySelector('img')?.src;
         const title = item.getAttribute('data-title') || 'Fotoğraf';
         const desc = item.getAttribute('data-desc') || '';
         
-        lightboxImg.src = src;
-        lightboxTitle.innerText = title;
-        lightboxDesc.innerText = desc;
-        lightboxCounter.innerText = `${currentImgIndex + 1} / ${visibleItems.length}`;
+        if (lightboxImg) lightboxImg.src = src;
+        if (lightboxTitle) lightboxTitle.innerText = title;
+        if (lightboxDesc) lightboxDesc.innerText = desc;
+        if (lightboxCounter) lightboxCounter.innerText = `${currentLightboxIdx + 1} / ${bentoItems.length}`;
         
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
     function closeLightbox() {
+        if (!modal) return;
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
     
-    function nextImage() {
-        if (visibleItems.length === 0) return;
-        const nextIdx = (currentImgIndex + 1) % visibleItems.length;
+    function nextLightboxImage() {
+        const nextIdx = (currentLightboxIdx + 1) % bentoItems.length;
         openLightbox(nextIdx);
     }
     
-    function prevImage() {
-        if (visibleItems.length === 0) return;
-        const prevIdx = (currentImgIndex - 1 + visibleItems.length) % visibleItems.length;
+    function prevLightboxImage() {
+        const prevIdx = (currentLightboxIdx - 1 + bentoItems.length) % bentoItems.length;
         openLightbox(prevIdx);
     }
     
-    bentoItems.forEach(item => {
+    bentoItems.forEach((item, idx) => {
         item.addEventListener('click', () => {
-            const index = visibleItems.indexOf(item);
-            if (index !== -1) {
-                openLightbox(index);
-            }
+            openLightbox(idx);
         });
     });
     
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
     if (backdrop) backdrop.addEventListener('click', closeLightbox);
-    if (nextBtn) nextBtn.addEventListener('click', nextImage);
-    if (prevBtn) prevBtn.addEventListener('click', prevImage);
+    if (lightboxNext) lightboxNext.addEventListener('click', nextLightboxImage);
+    if (lightboxPrev) lightboxPrev.addEventListener('click', prevLightboxImage);
     
-    // Keyboard navigation
     window.addEventListener('keydown', (e) => {
-        if (!modal.classList.contains('active')) return;
+        if (modal && !modal.classList.contains('active')) return;
         if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextImage();
-        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextLightboxImage();
+        if (e.key === 'ArrowLeft') prevLightboxImage();
     });
+    
+    startAutoPlay();
 });
 
 // Video Gallery (Cinema Player & Video Modal)

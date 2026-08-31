@@ -698,7 +698,7 @@
                 
                 <!-- Gallery Filter Buttons -->
                 <div class="gallery-filters" id="galleryFilters">
-                    <button class="gallery-filter-btn active" data-filter="all">Tümü (8)</button>
+                    <button class="gallery-filter-btn active" data-filter="all">Tümü (12)</button>
                     <button class="gallery-filter-btn" data-filter="miting">Miting & Teşkilat</button>
                     <button class="gallery-filter-btn" data-filter="saha">Saha Ziyaretleri</button>
                     <button class="gallery-filter-btn" data-filter="liderler">Liderle Buluşma</button>
@@ -706,107 +706,180 @@
                 </div>
             </div>
 
-            <!-- Bento Mosaic Photo Grid -->
-            <div class="gallery-bento-grid" id="galleryBentoGrid">
-                <!-- Item 1 (Bento Large) -->
-                <div class="gallery-bento-item bento-large" data-category="miting" data-src="./assets/mhp_rally.jpg" data-title="Büyük İstanbul Buluşması & MHP Mitingi" data-desc="Binlerce vatandaşımızın ve dava arkadaşımızın tek yürek olduğu tarihi İstanbul mitingi.">
-                    <img src="./assets/mhp_rally.jpg" alt="MHP Mitingi" loading="lazy">
-                    <div class="bento-badge"><i class="fas fa-star"></i> Öne Çıkan</div>
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Miting & Teşkilat</span>
-                            <h3 class="bento-title">Büyük İstanbul Buluşması & MHP Mitingi</h3>
-                            <p class="bento-desc">Binlerce vatandaşımızın ve dava arkadaşımızın tek yürek olduğu tarihi miting.</p>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+            <!-- Bento Carousel Container -->
+            <div class="gallery-carousel-container" id="galleryCarousel">
+                <!-- Nav Arrows -->
+                <button class="gallery-nav-btn gallery-prev" id="galleryPrev" aria-label="Önceki Fotoğraflar"><i class="fas fa-chevron-left"></i></button>
+                <button class="gallery-nav-btn gallery-next" id="galleryNext" aria-label="Sonraki Fotoğraflar"><i class="fas fa-chevron-right"></i></button>
+
+                <div class="gallery-slider-viewport" id="galleryViewport">
+                    <div class="gallery-slider-track" id="galleryTrack">
+                        <!-- Bento Slide 1 -->
+                        <div class="gallery-bento-slide">
+                            <!-- Item 1 (Bento Large) -->
+                            <div class="gallery-bento-item bento-large" data-category="miting" data-src="./assets/mhp_rally.jpg" data-title="Büyük İstanbul Buluşması & MHP Mitingi" data-desc="Binlerce vatandaşımızın ve dava arkadaşımızın tek yürek olduğu tarihi İstanbul mitingi.">
+                                <img src="./assets/mhp_rally.jpg" alt="MHP Mitingi" loading="lazy">
+                                <div class="bento-badge"><i class="fas fa-star"></i> Öne Çıkan</div>
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Miting & Teşkilat</span>
+                                        <h3 class="bento-title">Büyük İstanbul Buluşması & MHP Mitingi</h3>
+                                        <p class="bento-desc">Binlerce vatandaşımızın ve dava arkadaşımızın tek yürek olduğu tarihi miting.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 (Bento Tall) -->
+                            <div class="gallery-bento-item bento-tall" data-category="saha" data-src="./assets/foto.jpeg" data-title="Saha Çalışmaları & Esnaf Ziyaretleri" data-desc="İstanbul'umuzun sokaklarında hemşehrilerimizle dertleşme, esnaf ziyaretleri ve istişare buluşmaları.">
+                                <img src="./assets/foto.jpeg" alt="Uygar Oral ÖZTÜRK Sahada" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Saha Ziyareti</span>
+                                        <h3 class="bento-title">İstanbul Esnaf ve Halk Buluşmaları</h3>
+                                        <p class="bento-desc">Her daim milletimizin yanında ve sahadayız.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 (Bento Stacked Top) -->
+                            <div class="gallery-bento-item bento-stacked-top" data-category="liderler" data-src="./assets/real_grid9_1.jpg" data-title="Lider Dr. Devlet Bahçeli ile Görüşme" data-desc="MHP Genel Merkezi'nde Bilge Liderimiz Sayın Dr. Devlet Bahçeli Beyefendi ile istişare toplantısı.">
+                                <img src="./assets/real_grid9_1.jpg" alt="Devlet Bahçeli ile İstişare" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Liderle Buluşma</span>
+                                        <h3 class="bento-title">Bilge Liderimiz Sayın Devlet Bahçeli ile</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 4 (Bento Stacked Bottom) -->
+                            <div class="gallery-bento-item bento-stacked-bottom" data-category="basin" data-src="./assets/mhp_podium.jpg" data-title="İstanbul İl Kongresi Kürsü Hitabı" data-desc="MHP İstanbul İl Kongresi'nde kutlu yürüyüşümüzü anlatan coşkulu konuşma.">
+                                <img src="./assets/mhp_podium.jpg" alt="Kürsü Konuşması" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Kongre & Basın</span>
+                                        <h3 class="bento-title">İl Kongresi Kürsü Hitabı</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bento Slide 2 -->
+                        <div class="gallery-bento-slide">
+                            <!-- Item 5 (Bento Large) -->
+                            <div class="gallery-bento-item bento-large" data-category="miting" data-src="./assets/mhp_tram.jpg" data-title="İstiklal Caddesi Teşkilat Yürüyüşü" data-desc="MHP İstanbul İl Teşkilatı'nın Beyoğlu ve İstiklal Caddesi kutlu yürüyüşü.">
+                                <img src="./assets/mhp_tram.jpg" alt="İstiklal Caddesi Yürüyüşü" loading="lazy">
+                                <div class="bento-badge"><i class="fas fa-star"></i> Öne Çıkan</div>
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Miting & Teşkilat</span>
+                                        <h3 class="bento-title">İstiklal Caddesi Teşkilat Yürüyüşü</h3>
+                                        <p class="bento-desc">Görkemli bayraklar ve marşlar eşliğinde İstiklal yürüyüşü.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 6 (Bento Tall) -->
+                            <div class="gallery-bento-item bento-tall" data-category="liderler" data-src="./assets/about_bahceli_uygar.jpg" data-title="Lider Dr. Devlet Bahçeli ile Birlikte" data-desc="Genel Başkanımız Sayın Dr. Devlet Bahçeli Beyefendi ile makamında istişare.">
+                                <img src="./assets/about_bahceli_uygar.jpg" alt="Devlet Bahçeli ve Uygar Oral Öztürk" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Liderle Buluşma</span>
+                                        <h3 class="bento-title">Liderimiz Devlet Bahçeli ile</h3>
+                                        <p class="bento-desc">Genel Merkez makamında kutlu yürüyüş istişaresi.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 7 (Bento Stacked Top) -->
+                            <div class="gallery-bento-item bento-stacked-top" data-category="liderler" data-src="./assets/real_grid9_3.jpg" data-title="Genel Merkez Divan Ziyareti" data-desc="MHP Genel Merkezi ziyareti ve hayır duaları.">
+                                <img src="./assets/real_grid9_3.jpg" alt="Genel Merkez Ziyareti" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Liderle Buluşma</span>
+                                        <h3 class="bento-title">Genel Merkez Ziyareti</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 8 (Bento Stacked Bottom) -->
+                            <div class="gallery-bento-item bento-stacked-bottom" data-category="basin" data-src="./assets/real_grid9_7.jpg" data-title="MHP İstanbul İl Başkanlığı Divan Heyeti" data-desc="İl Başkanlığı Divan toplantısı ve teşkilat değerlendirmesi.">
+                                <img src="./assets/real_grid9_7.jpg" alt="İl Divan Toplantısı" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Kongre & Basın</span>
+                                        <h3 class="bento-title">İl Divan Heyeti Toplantısı</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bento Slide 3 -->
+                        <div class="gallery-bento-slide">
+                            <!-- Item 9 (Bento Large) -->
+                            <div class="gallery-bento-item bento-large" data-category="saha" data-src="./assets/real_grid9_5.jpg" data-title="İstanbul Teşkilat İstişare Toplantısı" data-desc="İlçe başkanları ve yönetim kurulu ile saha strateji toplantısı.">
+                                <img src="./assets/real_grid9_5.jpg" alt="Teşkilat İstişare" loading="lazy">
+                                <div class="bento-badge"><i class="fas fa-star"></i> Öne Çıkan</div>
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Saha & Teşkilat</span>
+                                        <h3 class="bento-title">İstanbul Teşkilat İstişare Toplantısı</h3>
+                                        <p class="bento-desc">İlçe başkanlarımız ve teşkilat mensuplarımızla saha stratejisi.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 10 (Bento Tall) -->
+                            <div class="gallery-bento-item bento-tall" data-category="liderler" data-src="./assets/real_grid9_2.jpg" data-title="Genel Başkanımız Dr. Devlet Bahçeli'yi Karşılama" data-desc="Bilge Liderimiz Sayın Devlet Bahçeli'nin teşriflerinde karşılama heyeti.">
+                                <img src="./assets/real_grid9_2.jpg" alt="Lider Karşılama" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Liderle Buluşma</span>
+                                        <h3 class="bento-title">Lider Devlet Bahçeli'yi Karşılama</h3>
+                                        <p class="bento-desc">İstanbul teşriflerinde teşkilatımızla karşılama.</p>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 11 (Bento Stacked Top) -->
+                            <div class="gallery-bento-item bento-stacked-top" data-category="basin" data-src="./assets/real_grid9_8.jpg" data-title="Kürsü Konuşması ve Hitap" data-desc="Teşkilat buluşmasında coşkulu konuşma ve değerlendirmeler.">
+                                <img src="./assets/real_grid9_8.jpg" alt="Kürsü Konuşması" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Kongre & Basın</span>
+                                        <h3 class="bento-title">Kürsü Konuşması ve Hitap</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Item 12 (Bento Stacked Bottom) -->
+                            <div class="gallery-bento-item bento-stacked-bottom" data-category="saha" data-src="./assets/real_grid9_9.jpg" data-title="Beyoğlu & İstiklal Faaliyetleri" data-desc="İstanbul'umuzun kalbinde saha ve hemşehri buluşmaları.">
+                                <img src="./assets/real_grid9_9.jpg" alt="İstiklal Caddesi Yürüyüşü" loading="lazy">
+                                <div class="bento-overlay">
+                                    <div class="bento-content">
+                                        <span class="bento-tag">Saha Ziyareti</span>
+                                        <h3 class="bento-title">Beyoğlu & İstiklal Faaliyetleri</h3>
+                                        <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Item 2 (Bento Tall) -->
-                <div class="gallery-bento-item bento-tall" data-category="saha" data-src="./assets/foto.jpeg" data-title="Saha Çalışmaları & Esnaf Ziyaretleri" data-desc="İstanbul'umuzun sokaklarında hemşehrilerimizle dertleşme, esnaf ziyaretleri ve istişare buluşmaları.">
-                    <img src="./assets/foto.jpeg" alt="Uygar Oral ÖZTÜRK Sahada" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Saha Ziyareti</span>
-                            <h3 class="bento-title">İstanbul Esnaf ve Halk Buluşmaları</h3>
-                            <p class="bento-desc">Her daim milletimizin yanında ve sahadayız.</p>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 3 (Bento Medium) -->
-                <div class="gallery-bento-item bento-medium" data-category="liderler" data-src="./assets/real_grid9_1.jpg" data-title="Lider Dr. Devlet Bahçeli ile Görüşme" data-desc="MHP Genel Merkezi'nde Bilge Liderimiz Sayın Dr. Devlet Bahçeli Beyefendi ile istişare toplantısı.">
-                    <img src="./assets/real_grid9_1.jpg" alt="Devlet Bahçeli ile İstişare" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Liderle Buluşma</span>
-                            <h3 class="bento-title">Bilge Liderimiz Sayın Devlet Bahçeli ile</h3>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 4 (Bento Medium) -->
-                <div class="gallery-bento-item bento-medium" data-category="basin" data-src="./assets/mhp_podium.jpg" data-title="İstanbul İl Kongresi Kürsü Hitabı" data-desc="MHP İstanbul İl Kongresi'nde kutlu yürüyüşümüzü anlatan coşkulu konuşma.">
-                    <img src="./assets/mhp_podium.jpg" alt="Kürsü Konuşması" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Kongre & Basın</span>
-                            <h3 class="bento-title">İl Kongresi Kürsü Hitabı</h3>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 5 (Bento Wide) -->
-                <div class="gallery-bento-item bento-wide" data-category="miting" data-src="./assets/mhp_tram.jpg" data-title="İstiklal Caddesi Teşkilat Yürüyüşü" data-desc="MHP İstanbul İl Teşkilatı'nın Beyoğlu ve İstiklal Caddesi kutlu yürüyüşü.">
-                    <img src="./assets/mhp_tram.jpg" alt="İstiklal Caddesi Yürüyüşü" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Miting & Teşkilat</span>
-                            <h3 class="bento-title">İstiklal Caddesi Teşkilat Yürüyüşü</h3>
-                            <p class="bento-desc">Görkemli bayraklar ve marşlar eşliğinde İstiklal yürüyüşü.</p>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> Fotoğrafı İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 6 (Bento Small) -->
-                <div class="gallery-bento-item bento-small" data-category="liderler" data-src="./assets/real_grid9_3.jpg" data-title="Genel Merkez Divan Ziyareti" data-desc="MHP Genel Merkezi ziyareti ve hayır duaları.">
-                    <img src="./assets/real_grid9_3.jpg" alt="Genel Merkez Ziyareti" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Liderle Buluşma</span>
-                            <h3 class="bento-title">Genel Merkez Ziyareti</h3>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 7 (Bento Small) -->
-                <div class="gallery-bento-item bento-small" data-category="basin" data-src="./assets/real_grid9_7.jpg" data-title="MHP İstanbul İl Başkanlığı Divan Heyeti" data-desc="İl Başkanlığı Divan toplantısı ve teşkilat değerlendirmesi.">
-                    <img src="./assets/real_grid9_7.jpg" alt="İl Divan Toplantısı" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Kongre & Basın</span>
-                            <h3 class="bento-title">İl Divan Heyeti Toplantısı</h3>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Item 8 (Bento Small) -->
-                <div class="gallery-bento-item bento-small" data-category="saha" data-src="./assets/real_grid9_5.jpg" data-title="İstanbul Teşkilat İstişare Toplantısı" data-desc="İlçe başkanları ve yönetim kurulu ile saha strateji toplantısı.">
-                    <img src="./assets/real_grid9_5.jpg" alt="Teşkilat İstişare" loading="lazy">
-                    <div class="bento-overlay">
-                        <div class="bento-content">
-                            <span class="bento-tag">Saha Ziyareti</span>
-                            <h3 class="bento-title">Teşkilat İstişare Toplantısı</h3>
-                            <span class="bento-zoom-btn"><i class="fas fa-expand-alt"></i> İncele</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Gallery Carousel Dots / Pagination -->
+                <div class="gallery-dots" id="galleryDots"></div>
             </div>
         </div>
     </section>
