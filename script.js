@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dot = document.createElement('span');
             dot.className = `p-dot ${i === currentIndex ? 'active' : ''}`;
             dot.dataset.index = i;
-            dot.title = `Milli Hedef Grubu ${i + 1}`;
+            dot.title = `Proje Grubu ${i + 1}`;
             dot.addEventListener('click', () => {
                 goToIndex(i);
                 startAutoPlay();
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dot = document.createElement('span');
             dot.className = `v-dot ${i === currentIndex ? 'active' : ''}`;
             dot.dataset.index = i;
-            dot.title = `Dokuz Işık Grubu ${i + 1}`;
+            dot.title = `İlke Grubu ${i + 1}`;
             dot.addEventListener('click', () => {
                 goToIndex(i);
                 startAutoPlay();
