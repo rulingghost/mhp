@@ -293,7 +293,7 @@ function applyDynamicContent(data) {
                         <div class="value-icon">
                             <i class="${valueIcons[i % valueIcons.length]}"></i>
                         </div>
-                        <span class="value-tag">Dokuz Işık 0${i + 1}</span>
+                        <span class="value-tag">İlke 0${i + 1}</span>
                     </div>
                     <h3 class="value-title">${escapeHtml(item.title)}</h3>
                     <p class="value-desc">${escapeHtml(item.description)}</p>
