@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yönetim Paneli | MHP Web Sitesi İçerik Yönetimi</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              red: '#c0151a',
+              darkRed: '#960f13',
+              dark: '#0b1120',
+              card: '#131d33',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    
+    .tab-btn.active {
+      background-color: #c0151a;
+      color: #ffffff;
+      box-shadow: 0 4px 14px 0 rgba(192, 21, 26, 0.39);
+    }
+    .accordion-body.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-28 font-sans antialiased">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-slate-800 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand / Identity -->
+        <div class="flex items-center space-x-3">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/MHP_logo_Turkey.png" alt="MHP Logo" class="w-10 h-10 object-contain">
+          <div>
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+              <span>İçerik Yönetim Paneli</span>
+              <span class="text-[11px] font-medium bg-red-950/80 text-red-400 border border-red-800/60 px-2 py-0.5 rounded-full">v1.0</span>
+            </h1>
+            <p class="text-xs text-slate-400 hidden sm:block">Uygar Oral ÖZTÜRK - MHP İstanbul İl Başkan Yardımcısı</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Preview Site Button -->
+          <a 
+            href="/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium rounded-lg text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white border border-slate-700 transition shadow-sm"
+            title="Web Sitesini Yeni Sekmede Aç"
+          >
+            <i class="fas fa-external-link-alt text-xs text-red-400"></i>
+            <span>Siteyi Görüntüle</span>
+          </a>
+
+          <!-- Logout Button -->
+          <button 
+            id="logoutBtn" 
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg text-red-300 hover:text-white hover:bg-red-950/60 border border-red-900/40 transition"
+            title="Güvenli Çıkış"
+          >
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="hidden sm:inline">Çıkış</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+
+    <!-- PAGE TITLE & TAB NAVIGATION -->
+    <div class="mb-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-800">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Sayfa İçeriklerini Düzenle</h2>
+          <p class="text-sm text-slate-400 mt-1">Sadece aşağıdaki 4 bölümün metin içeriklerini dinamik olarak yönetebilirsiniz.</p>
+        </div>
+        <div id="saveStatusIndicator" class="text-xs text-slate-400 flex items-center gap-1.5">
+          <i class="fas fa-circle text-[8px] text-emerald-500"></i>
+          <span>Tüm değişiklikler güncel</span>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="flex flex-wrap gap-2 mt-6 p-1.5 bg-slate-900/90 border border-slate-800 rounded-xl">
+        <button class="tab-btn active flex-1 min-w-[140px] py-2.5 px-4 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2" data-tab="tab-hero">
+          <i class="fas fa-images"></i>
+          <span>1. Ana Sayfa (Slider)</span>
+        </button>
+        <button class="tab-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2" data-tab="tab-about">
+          <i class="fas fa-user-tie"></i>
+          <span>2. Hakkımda</span>
+        </button>
+        <button class="tab-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2" data-tab="tab-vision">
+          <i class="fas fa-lightbulb"></i>
+          <span>3. Vizyon & Projeler</span>
+        </button>
+        <button class="tab-btn flex-1 min-w-[140px] py-2.5 px-4 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2" data-tab="tab-values">
+          <i class="fas fa-balance-scale"></i>
+          <span>4. İlkelerimiz</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- LOADING SPINNER ON INITIAL FETCH -->
+    <div id="initialLoader" class="flex flex-col items-center justify-center py-20">
+      <i class="fas fa-circle-notch fa-spin text-4xl text-red-500 mb-4"></i>
+      <p class="text-slate-400 text-sm">Site içerikleri yükleniyor, lütfen bekleyin...</p>
+    </div>
+
+    <!-- FORM CONTAINER -->
+    <form id="contentForm" class="hidden space-y-8">
+
+      <!-- ========================================== -->
+      <!-- SEKME 1: ANA SAYFA (SLIDER / HERO METİNLERİ) -->
+      <!-- ========================================== -->
+      <section id="tab-hero" class="tab-content space-y-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fas fa-sliders-h text-red-500"></i>
+                <span>Hero Slider Slaytları (3 Adet)</span>
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">Ana sayfadaki 3 ana slaytın başlık, alıntı ve buton metinlerini düzenleyin.</p>
+            </div>
+          </div>
+
+          <!-- 3 SLIDES ACCORDION / CARDS -->
+          <div class="space-y-4" id="heroSlidesContainer">
+            <!-- Will be dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SEKME 2: HAKKIMDA (ÖZGEÇMİŞ) -->
+      <!-- ========================================== -->
+      <section id="tab-about" class="tab-content hidden space-y-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fas fa-address-card text-red-500"></i>
+              <span>Hakkımda (Özgeçmiş & Görevler)</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Özgeçmiş başlıkları, hizmet yılı rozeti, biyografi paragrafları ve görev kartları.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Bölüm Rozeti</label>
+              <input type="text" id="aboutBadge" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Ana Başlık</label>
+              <input type="text" id="aboutTitle" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+          </div>
+
+          <!-- EXPERIENCE BADGE -->
+          <div class="p-4 bg-slate-800/60 border border-slate-700/80 rounded-xl mb-6">
+            <h4 class="text-sm font-semibold text-amber-400 flex items-center gap-2 mb-3">
+              <i class="fas fa-award"></i>
+              <span>Tecrübe Rozeti (Görsel Üzerindeki Rozet)</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Rakam / Yıl</label>
+                <input type="text" id="aboutExpYears" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Açıklama Metni</label>
+                <input type="text" id="aboutExpLabel" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 BIOGRAPHY PARAGRAPHS -->
+          <div class="space-y-4 mb-6">
+            <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+              <i class="fas fa-paragraph text-red-500"></i>
+              <span>Biyografi Paragrafları (3 Adet)</span>
+            </h4>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">1. Paragraf (Doğum ve Eğitim)</label>
+              <textarea id="aboutP1" rows="3" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">2. Paragraf (İş Hayatı ve Girişimcilik)</label>
+              <textarea id="aboutP2" rows="3" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">3. Paragraf (Teşkilat Görevleri ve STK)</label>
+              <textarea id="aboutP3" rows="3" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+            </div>
+          </div>
+
+          <!-- 2 DUTY CARDS -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+              <i class="fas fa-id-badge text-red-500"></i>
+              <span>Görev Kartları (2 Adet)</span>
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Card 1 -->
+              <div class="p-4 bg-slate-800/60 border border-slate-700/80 rounded-xl space-y-3">
+                <span class="text-xs font-bold text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fas fa-briefcase"></i> 1. Görev Kartı
+                </span>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Kurum / Şirket Adı</label>
+                  <input type="text" id="aboutCardTitle0" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Unvan / Rol</label>
+                  <input type="text" id="aboutCardRole0" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div class="p-4 bg-slate-800/60 border border-slate-700/80 rounded-xl space-y-3">
+                <span class="text-xs font-bold text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fas fa-users"></i> 2. Görev Kartı
+                </span>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Kurum / STK Adı</label>
+                  <input type="text" id="aboutCardTitle1" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Unvan / Rol</label>
+                  <input type="text" id="aboutCardRole1" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SEKME 3: VİZYON & PROJELER -->
+      <!-- ========================================== -->
+      <section id="tab-vision" class="tab-content hidden space-y-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fas fa-project-diagram text-red-500"></i>
+              <span>Vizyon & Projeler (Çalışma Programı)</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Bölüm başlıkları ve carousel olarak kayan proje kartlarının listesi.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Bölüm Rozeti</label>
+              <input type="text" id="visionBadge" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Ana Başlık</label>
+              <input type="text" id="visionTitle" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Bölüm Giriş Açıklaması</label>
+            <textarea id="visionDesc" rows="3" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+          </div>
+
+          <!-- PROJECT CARDS LIST -->
+          <div class="pt-6 border-t border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fas fa-layer-group text-amber-500"></i>
+                <span>Proje Kartları Listesi</span>
+                <span id="projectCountBadge" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">0 Proje</span>
+              </h4>
+              <button 
+                type="button" 
+                id="addProjectBtn" 
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition"
+              >
+                <i class="fas fa-plus"></i>
+                <span>Yeni Proje Ekle</span>
+              </button>
+            </div>
+
+            <div id="projectsList" class="space-y-4">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SEKME 4: İLKELERİMİZ -->
+      <!-- ========================================== -->
+      <section id="tab-values" class="tab-content hidden space-y-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fas fa-star text-red-500"></i>
+              <span>İlkelerimiz (Temel İlke Maddeleri)</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">İlkelerimiz bölümü başlıkları ve ilke maddeleri listesi.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Bölüm Rozeti</label>
+              <input type="text" id="valuesBadge" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Ana Başlık</label>
+              <input type="text" id="valuesTitle" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Bölüm Açıklaması</label>
+            <textarea id="valuesDesc" rows="3" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+          </div>
+
+          <!-- VALUES ITEMS LIST -->
+          <div class="pt-6 border-t border-slate-800">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fas fa-list-ol text-amber-500"></i>
+                <span>İlke Maddeleri Listesi</span>
+                <span id="valueCountBadge" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">0 Madde</span>
+              </h4>
+              <button 
+                type="button" 
+                id="addValueBtn" 
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition"
+              >
+                <i class="fas fa-plus"></i>
+                <span>Yeni İlke Ekle</span>
+              </button>
+            </div>
+
+            <div id="valuesList" class="space-y-4">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </form>
+  </main>
+
+  <!-- STICKY BOTTOM SAVE BAR -->
+  <aside class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur border-t border-slate-800 py-3.5 px-4 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <i class="fas fa-shield-alt text-slate-500"></i>
+        <span class="hidden sm:inline">Yaptığınız değişiklikler sitede anında aktif olur.</span>
+        <span class="sm:hidden">Anında yayınlanır.</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button 
+          type="button" 
+          id="saveChangesBtn" 
+          class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white text-sm font-bold rounded-xl shadow-lg shadow-red-900/50 hover:shadow-red-900/70 transition-all cursor-pointer"
+        >
+          <i class="fas fa-save" id="saveIcon"></i>
+          <i class="fas fa-spinner fa-spin hidden" id="saveSpinner"></i>
+          <span id="saveBtnText">Değişiklikleri Kaydet</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed top-20 right-4 z-50 transform translate-x-full transition-all duration-300 max-w-sm w-full p-4 rounded-xl shadow-2xl border flex items-center gap-3 hidden">
+    <i id="toastIcon" class="text-xl"></i>
+    <div class="flex-1">
+      <h5 id="toastTitle" class="text-sm font-bold text-white"></h5>
+      <p id="toastMessage" class="text-xs text-slate-300 mt-0.5"></p>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // State
+    let siteData = null;
+    const token = localStorage.getItem('mhp_admin_token');
+
+    // 1. Auth Guard
+    if (!token) {
+      window.location.href = '/admin/login';
+    }
+
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('mhp_admin_token');
+      document.cookie = "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      window.location.href = '/admin/login';
+    });
+
+    // Toast utility
+    let toastTimeout;
+    function showToast(type, title, message) {
+      clearTimeout(toastTimeout);
+      const toast = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const tTitle = document.getElementById('toastTitle');
+      const tMsg = document.getElementById('toastMessage');
+
+      toast.className = 'fixed top-20 right-4 z-50 transition-all duration-300 max-w-sm w-full p-4 rounded-xl shadow-2xl border flex items-center gap-3';
+      
+      if (type === 'success') {
+        toast.classList.add('bg-slate-900', 'border-emerald-600', 'text-emerald-400');
+        icon.className = 'fas fa-check-circle text-emerald-400 text-xl';
+      } else {
+        toast.classList.add('bg-slate-900', 'border-red-600', 'text-red-400');
+        icon.className = 'fas fa-exclamation-triangle text-red-400 text-xl';
+      }
+
+      tTitle.textContent = title;
+      tMsg.textContent = message;
+      toast.classList.remove('hidden');
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    // Tab switcher
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-tab');
+        
+        tabButtons.forEach(b => b.classList.remove('active', 'text-white'));
+        btn.classList.add('active');
+
+        tabContents.forEach(content => {
+          if (content.id === targetId) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // 2. Load Content
+    async function loadContent() {
+      try {
+        const res = await fetch('/api/content');
+        if (!res.ok) {
+          throw new Error('İçerik API yanıt vermedi.');
+        }
+        siteData = await res.json();
+        populateForm(siteData);
+        
+        document.getElementById('initialLoader').classList.add('hidden');
+        document.getElementById('contentForm').classList.remove('hidden');
+      } catch (err) {
+        console.error('Fetch error:', err);
+        showToast('error', 'Hata', 'İçerik yüklenirken bir problem oluştu.');
+      }
+    }
+
+    // 3. Populate Form with Data
+    function populateForm(data) {
+      if (!data) return;
+
+      // Populate Hero Slides
+      renderHeroSlides(data.hero || []);
+
+      // Populate About
+      const about = data.about || {};
+      document.getElementById('aboutBadge').value = about.badge || '';
+      document.getElementById('aboutTitle').value = about.title || '';
+      document.getElementById('aboutExpYears').value = about.experienceYears || '';
+      document.getElementById('aboutExpLabel').value = about.experienceLabel || '';
+
+      const paragraphs = about.paragraphs || [];
+      document.getElementById('aboutP1').value = paragraphs[0] || '';
+      document.getElementById('aboutP2').value = paragraphs[1] || '';
+      document.getElementById('aboutP3').value = paragraphs[2] || '';
+
+      const cards = about.cards || [];
+      document.getElementById('aboutCardTitle0').value = cards[0]?.title || '';
+      document.getElementById('aboutCardRole0').value = cards[0]?.role || '';
+      document.getElementById('aboutCardTitle1').value = cards[1]?.title || '';
+      document.getElementById('aboutCardRole1').value = cards[1]?.role || '';
+
+      // Populate Vision
+      const vision = data.vision || {};
+      document.getElementById('visionBadge').value = vision.badge || '';
+      document.getElementById('visionTitle').value = vision.title || '';
+      document.getElementById('visionDesc').value = vision.description || '';
+      renderProjects(vision.projects || []);
+
+      // Populate Values
+      const values = data.values || {};
+      document.getElementById('valuesBadge').value = values.badge || '';
+      document.getElementById('valuesTitle').value = values.title || '';
+      document.getElementById('valuesDesc').value = values.description || '';
+      renderValues(values.items || []);
+    }
+
+    // Render Hero Slides UI (3 Accordion Cards)
+    function renderHeroSlides(slides) {
+      const container = document.getElementById('heroSlidesContainer');
+      container.innerHTML = '';
+
+      slides.forEach((slide, idx) => {
+        const card = document.createElement('div');
+        card.className = 'border border-slate-800 bg-slate-950/60 rounded-xl overflow-hidden';
+        card.innerHTML = `
+          <button type="button" class="w-full px-5 py-4 flex items-center justify-between bg-slate-800/40 hover:bg-slate-800/70 transition text-left accordion-header" data-index="${idx}">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-full bg-red-950 text-red-400 border border-red-800 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+              <div>
+                <span class="text-sm font-bold text-white">Slayt ${idx + 1}: ${slide.badge || 'Başlıksız Slayt'}</span>
+                <span class="block text-xs text-slate-400 mt-0.5 line-clamp-1">${slide.title} ${slide.highlightTitle}</span>
+              </div>
+            </div>
+            <i class="fas fa-chevron-down text-slate-400 text-xs transition-transform transform ${idx === 0 ? 'rotate-180' : ''}"></i>
+          </button>
+          <div class="p-5 space-y-4 accordion-body ${idx === 0 ? '' : 'hidden'}" id="slideBody${idx}">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Rozet (Badge)</label>
+                <input type="text" id="slideBadge_${idx}" value="${escapeHtml(slide.badge || '')}" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ana Başlık</label>
+                <input type="text" id="slideTitle_${idx}" value="${escapeHtml(slide.title || '')}" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Vurgulu Başlık (Kırmızı)</label>
+                <input type="text" id="slideHighlight_${idx}" value="${escapeHtml(slide.highlightTitle || '')}" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Alıntı Metni (Quote)</label>
+              <textarea id="slideQuote_${idx}" rows="2" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">${escapeHtml(slide.quote || '')}</textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Açıklama Metni (Description)</label>
+              <textarea id="slideDesc_${idx}" rows="2" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">${escapeHtml(slide.description || '')}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-slate-900/80 rounded-xl border border-slate-800/80">
+              <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-300">1. Buton</span>
+                <input type="text" id="slideBtn1Text_${idx}" placeholder="Buton Metni" value="${escapeHtml(slide.btn1Text || '')}" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-xs focus:ring-2 focus:ring-red-600 focus:outline-none">
+                <input type="text" id="slideBtn1Link_${idx}" placeholder="Buton Linki (#values vb.)" value="${escapeHtml(slide.btn1Link || '')}" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-xs focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+              <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-300">2. Buton</span>
+                <input type="text" id="slideBtn2Text_${idx}" placeholder="Buton Metni" value="${escapeHtml(slide.btn2Text || '')}" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-xs focus:ring-2 focus:ring-red-600 focus:outline-none">
+                <input type="text" id="slideBtn2Link_${idx}" placeholder="Buton Linki (#vision vb.)" value="${escapeHtml(slide.btn2Link || '')}" class="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-xs focus:ring-2 focus:ring-red-600 focus:outline-none">
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Attach accordion clicks
+      container.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const body = header.nextElementSibling;
+          const icon = header.querySelector('.fa-chevron-down');
+          const isHidden = body.classList.contains('hidden');
+          
+          body.classList.toggle('hidden', !isHidden);
+          if (icon) {
+            icon.classList.toggle('rotate-180', isHidden);
+          }
+        });
+      });
+    }
+
+    // Render Project Cards List
+    function renderProjects(projects) {
+      const container = document.getElementById('projectsList');
+      const badge = document.getElementById('projectCountBadge');
+      badge.textContent = `${projects.length} Proje`;
+      container.innerHTML = '';
+
+      projects.forEach((proj, idx) => {
+        const item = document.createElement('div');
+        item.className = 'p-4 bg-slate-800/40 border border-slate-700/80 rounded-xl space-y-3 relative group';
+        item.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              <i class="fas fa-cube"></i> Proje #${idx + 1}
+            </span>
+            <button type="button" class="delete-project-btn text-xs text-red-400 hover:text-red-300 hover:bg-red-950/60 px-2.5 py-1 rounded border border-red-900/40 transition" data-index="${idx}">
+              <i class="fas fa-trash-alt mr-1"></i> Projeyi Sil
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Kategori Etiketi</label>
+              <input type="text" class="proj-cat w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none" value="${escapeHtml(proj.category || '')}">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Proje Başlığı</label>
+              <input type="text" class="proj-title w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none" value="${escapeHtml(proj.title || '')}">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Proje Açıklaması</label>
+            <textarea rows="2" class="proj-desc w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">${escapeHtml(proj.description || '')}</textarea>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+
+      // Attach delete handlers
+      container.querySelectorAll('.delete-project-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(btn.dataset.index, 10);
+          if (confirm(`Bu projeyi silmek istediğinize emin misiniz?`)) {
+            siteData.vision.projects.splice(index, 1);
+            renderProjects(siteData.vision.projects);
+          }
+        });
+      });
+    }
+
+    // Add New Project Button
+    document.getElementById('addProjectBtn').addEventListener('click', () => {
+      syncCurrentFormState();
+      const newId = siteData.vision.projects.length ? Math.max(...siteData.vision.projects.map(p => p.id || 0)) + 1 : 1;
+      siteData.vision.projects.push({
+        id: newId,
+        title: 'Yeni Proje Başlığı',
+        category: 'Genel',
+        description: 'Proje açıklamasını buraya girin.'
+      });
+      renderProjects(siteData.vision.projects);
+    });
+
+    // Render Values Items List
+    function renderValues(items) {
+      const container = document.getElementById('valuesList');
+      const badge = document.getElementById('valueCountBadge');
+      badge.textContent = `${items.length} Madde`;
+      container.innerHTML = '';
+
+      items.forEach((item, idx) => {
+        const row = document.createElement('div');
+        row.className = 'p-4 bg-slate-800/40 border border-slate-700/80 rounded-xl space-y-3 relative group';
+        row.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-red-400 flex items-center gap-1.5">
+              <i class="fas fa-check-circle"></i> İlke Maddesi #${idx + 1}
+            </span>
+            <button type="button" class="delete-value-btn text-xs text-red-400 hover:text-red-300 hover:bg-red-950/60 px-2.5 py-1 rounded border border-red-900/40 transition" data-index="${idx}">
+              <i class="fas fa-trash-alt mr-1"></i> Maddeyi Sil
+            </button>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">İlke Başlığı</label>
+            <input type="text" class="val-title w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none" value="${escapeHtml(item.title || '')}">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">İlke Açıklaması</label>
+            <textarea rows="2" class="val-desc w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-red-600 focus:outline-none">${escapeHtml(item.description || '')}</textarea>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      // Attach delete handlers
+      container.querySelectorAll('.delete-value-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index, 10);
+          if (confirm(`Bu ilke maddesini silmek istediğinize emin misiniz?`)) {
+            siteData.values.items.splice(index, 1);
+            renderValues(siteData.values.items);
+          }
+        });
+      });
+    }
+
+    // Add New Value Item Button
+    document.getElementById('addValueBtn').addEventListener('click', () => {
+      syncCurrentFormState();
+      const newId = siteData.values.items.length ? Math.max(...siteData.values.items.map(v => v.id || 0)) + 1 : 1;
+      siteData.values.items.push({
+        id: newId,
+        title: 'Yeni İlke Başlığı',
+        description: 'İlke açıklamasını buraya yazın.'
+      });
+      renderValues(siteData.values.items);
+    });
+
+    // Helper: Sync current form input values into `siteData` object
+    function syncCurrentFormState() {
+      if (!siteData) return;
+
+      // Hero slides
+      if (Array.isArray(siteData.hero)) {
+        siteData.hero.forEach((slide, idx) => {
+          const badgeEl = document.getElementById(`slideBadge_${idx}`);
+          const titleEl = document.getElementById(`slideTitle_${idx}`);
+          const highlightEl = document.getElementById(`slideHighlight_${idx}`);
+          const quoteEl = document.getElementById(`slideQuote_${idx}`);
+          const descEl = document.getElementById(`slideDesc_${idx}`);
+          const btn1TextEl = document.getElementById(`slideBtn1Text_${idx}`);
+          const btn1LinkEl = document.getElementById(`slideBtn1Link_${idx}`);
+          const btn2TextEl = document.getElementById(`slideBtn2Text_${idx}`);
+          const btn2LinkEl = document.getElementById(`slideBtn2Link_${idx}`);
+
+          if (badgeEl) slide.badge = badgeEl.value.trim();
+          if (titleEl) slide.title = titleEl.value.trim();
+          if (highlightEl) slide.highlightTitle = highlightEl.value.trim();
+          if (quoteEl) slide.quote = quoteEl.value.trim();
+          if (descEl) slide.description = descEl.value.trim();
+          if (btn1TextEl) slide.btn1Text = btn1TextEl.value.trim();
+          if (btn1LinkEl) slide.btn1Link = btn1LinkEl.value.trim();
+          if (btn2TextEl) slide.btn2Text = btn2TextEl.value.trim();
+          if (btn2LinkEl) slide.btn2Link = btn2LinkEl.value.trim();
+        });
+      }
+
+      // About
+      siteData.about = siteData.about || {};
+      siteData.about.badge = document.getElementById('aboutBadge').value.trim();
+      siteData.about.title = document.getElementById('aboutTitle').value.trim();
+      siteData.about.experienceYears = document.getElementById('aboutExpYears').value.trim();
+      siteData.about.experienceLabel = document.getElementById('aboutExpLabel').value.trim();
+      siteData.about.paragraphs = [
+        document.getElementById('aboutP1').value.trim(),
+        document.getElementById('aboutP2').value.trim(),
+        document.getElementById('aboutP3').value.trim(),
+      ];
+      siteData.about.cards = [
+        {
+          title: document.getElementById('aboutCardTitle0').value.trim(),
+          role: document.getElementById('aboutCardRole0').value.trim()
+        },
+        {
+          title: document.getElementById('aboutCardTitle1').value.trim(),
+          role: document.getElementById('aboutCardRole1').value.trim()
+        }
+      ];
+
+      // Vision
+      siteData.vision = siteData.vision || {};
+      siteData.vision.badge = document.getElementById('visionBadge').value.trim();
+      siteData.vision.title = document.getElementById('visionTitle').value.trim();
+      siteData.vision.description = document.getElementById('visionDesc').value.trim();
+
+      // Read dynamic projects list from DOM
+      const projCards = document.querySelectorAll('#projectsList > div');
+      const updatedProjects = [];
+      projCards.forEach((card, idx) => {
+        const cat = card.querySelector('.proj-cat')?.value.trim() || '';
+        const title = card.querySelector('.proj-title')?.value.trim() || '';
+        const desc = card.querySelector('.proj-desc')?.value.trim() || '';
+        const existingId = siteData.vision.projects[idx]?.id || (idx + 1);
+        updatedProjects.push({ id: existingId, title, category: cat, description: desc });
+      });
+      siteData.vision.projects = updatedProjects;
+
+      // Values
+      siteData.values = siteData.values || {};
+      siteData.values.badge = document.getElementById('valuesBadge').value.trim();
+      siteData.values.title = document.getElementById('valuesTitle').value.trim();
+      siteData.values.description = document.getElementById('valuesDesc').value.trim();
+
+      // Read dynamic values items list from DOM
+      const valCards = document.querySelectorAll('#valuesList > div');
+      const updatedItems = [];
+      valCards.forEach((card, idx) => {
+        const title = card.querySelector('.val-title')?.value.trim() || '';
+        const desc = card.querySelector('.val-desc')?.value.trim() || '';
+        const existingId = siteData.values.items[idx]?.id || (idx + 1);
+        updatedItems.push({ id: existingId, title, description: desc });
+      });
+      siteData.values.items = updatedItems;
+    }
+
+    // 4. Save Content Action
+    const saveBtn = document.getElementById('saveChangesBtn');
+    const saveIcon = document.getElementById('saveIcon');
+    const saveSpinner = document.getElementById('saveSpinner');
+    const saveBtnText = document.getElementById('saveBtnText');
+    const statusIndicator = document.getElementById('saveStatusIndicator');
+
+    saveBtn.addEventListener('click', async () => {
+      syncCurrentFormState();
+
+      // UI Loading state
+      saveBtn.disabled = true;
+      saveIcon.classList.add('hidden');
+      saveSpinner.classList.remove('hidden');
+      saveBtnText.textContent = 'Kaydediliyor...';
+
+      try {
+        const res = await fetch('/api/content', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(siteData)
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          showToast('success', 'Başarılı!', 'Tüm değişiklikler kaydedildi ve sitede yayına alındı.');
+          const now = new Date();
+          statusIndicator.innerHTML = `<i class="fas fa-check text-emerald-500 text-[10px]"></i> Son kayıt: ${now.toLocaleTimeString('tr-TR')}`;
+        } else {
+          if (res.status === 401) {
+            showToast('error', 'Oturum Süresi Doldu', 'Lütfen tekrar giriş yapınız.');
+            setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+          } else {
+            showToast('error', 'Kaydetme Hatası', result.message || 'Veri kaydedilemedi.');
+          }
+        }
+      } catch (err) {
+        console.error('Save error:', err);
+        showToast('error', 'Bağlantı Hatası', 'Sunucuya bağlanırken bir hata oluştu.');
+      } finally {
+        saveBtn.disabled = false;
+        saveIcon.classList.remove('hidden');
+        saveSpinner.classList.add('hidden');
+        saveBtnText.textContent = 'Değişiklikleri Kaydet';
+      }
+    });
+
+    // Helper: HTML escape
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Init
+    loadContent();
+  </script>
+</body>
+</html>

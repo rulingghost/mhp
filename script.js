@@ -109,8 +109,198 @@ function switchSocialTab(tabKey) {
     }
 }
 
+// ==========================================
+// DYNAMIC SITE CONTENT LOADER & SLIDERS
+// ==========================================
+
+const heroBadgeIcons = [
+    'fas fa-landmark',
+    'fas fa-shield-alt',
+    'fas fa-map-marker-alt'
+];
+
+const projectIcons = [
+    'fas fa-industry',
+    'fas fa-wheat-awn',
+    'fas fa-user-graduate',
+    'fas fa-city',
+    'fas fa-hands-helping',
+    'fas fa-route',
+    'fas fa-landmark',
+    'fas fa-tree',
+    'fas fa-lightbulb',
+    'fas fa-building'
+];
+
+const valueIcons = [
+    'fas fa-flag',
+    'fas fa-star-and-crescent',
+    'fas fa-shield-alt',
+    'fas fa-brain',
+    'fas fa-hands-helping',
+    'fas fa-wheat-awn',
+    'fas fa-balance-scale',
+    'fas fa-chart-line',
+    'fas fa-microchip'
+];
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+async function fetchSiteContent() {
+    try {
+        const response = await fetch('/api/content');
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (e) {
+        console.warn('API /api/content fetch failed, attempting local data/site-content.json fallback...', e);
+    }
+
+    try {
+        const fallbackRes = await fetch('data/site-content.json');
+        if (fallbackRes.ok) {
+            return await fallbackRes.json();
+        }
+    } catch (err) {
+        console.warn('Could not fetch data/site-content.json:', err);
+    }
+    return null;
+}
+
+function applyDynamicContent(data) {
+    if (!data) return;
+
+    // 1. Hero Slides
+    if (Array.isArray(data.hero)) {
+        data.hero.forEach((slide, idx) => {
+            const badgeEl = document.getElementById(`heroBadge${idx}`);
+            const titleEl = document.getElementById(`heroTitle${idx}`);
+            const quoteEl = document.getElementById(`heroQuote${idx}`);
+            const descEl = document.getElementById(`heroDesc${idx}`);
+            const btn1El = document.getElementById(`heroBtn1_${idx}`);
+            const btn2El = document.getElementById(`heroBtn2_${idx}`);
+
+            if (badgeEl) {
+                const icon = heroBadgeIcons[idx] || 'fas fa-landmark';
+                badgeEl.innerHTML = `<i class="${icon}"></i> ${escapeHtml(slide.badge)}`;
+            }
+            if (titleEl) {
+                titleEl.innerHTML = `${escapeHtml(slide.title)} <br><span class="text-primary">${escapeHtml(slide.highlightTitle)}</span>`;
+            }
+            if (quoteEl) {
+                quoteEl.textContent = `"${slide.quote}"`;
+            }
+            if (descEl) {
+                descEl.textContent = slide.description;
+            }
+            if (btn1El) {
+                btn1El.textContent = slide.btn1Text;
+                btn1El.setAttribute('href', slide.btn1Link || '#');
+            }
+            if (btn2El) {
+                btn2El.textContent = slide.btn2Text;
+                btn2El.setAttribute('href', slide.btn2Link || '#');
+            }
+        });
+    }
+
+    // 2. About Section
+    if (data.about) {
+        const badgeEl = document.getElementById('aboutBadge');
+        const titleEl = document.getElementById('aboutTitle');
+        const expYearsEl = document.getElementById('aboutExpYears');
+        const expLabelEl = document.getElementById('aboutExpLabel');
+        const paragraphsEl = document.getElementById('aboutParagraphs');
+        const cardTitle0 = document.getElementById('aboutCardTitle0');
+        const cardRole0 = document.getElementById('aboutCardRole0');
+        const cardTitle1 = document.getElementById('aboutCardTitle1');
+        const cardRole1 = document.getElementById('aboutCardRole1');
+
+        if (badgeEl) badgeEl.textContent = data.about.badge;
+        if (titleEl) titleEl.textContent = data.about.title;
+        if (expYearsEl) expYearsEl.textContent = data.about.experienceYears;
+        if (expLabelEl) {
+            expLabelEl.innerHTML = (data.about.experienceLabel || 'Yıllık Hizmet').replace(/\n/g, '<br>');
+        }
+
+        if (paragraphsEl && Array.isArray(data.about.paragraphs)) {
+            paragraphsEl.innerHTML = data.about.paragraphs
+                .map(p => `<p class="about-text">${escapeHtml(p)}</p>`)
+                .join('');
+        }
+
+        if (Array.isArray(data.about.cards)) {
+            if (cardTitle0 && data.about.cards[0]) cardTitle0.textContent = data.about.cards[0].title;
+            if (cardRole0 && data.about.cards[0]) cardRole0.textContent = data.about.cards[0].role;
+            if (cardTitle1 && data.about.cards[1]) cardTitle1.textContent = data.about.cards[1].title;
+            if (cardRole1 && data.about.cards[1]) cardRole1.textContent = data.about.cards[1].role;
+        }
+    }
+
+    // 3. Vision & Projects Section
+    if (data.vision) {
+        const badgeEl = document.getElementById('visionBadge');
+        const titleEl = document.getElementById('visionTitle');
+        const descEl = document.getElementById('visionDesc');
+        const track = document.getElementById('projectsTrack');
+
+        if (badgeEl) badgeEl.textContent = data.vision.badge;
+        if (titleEl) titleEl.textContent = data.vision.title;
+        if (descEl) descEl.textContent = data.vision.description;
+
+        if (track && Array.isArray(data.vision.projects)) {
+            track.innerHTML = data.vision.projects.map((proj, i) => `
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="${projectIcons[i % projectIcons.length]}"></i>
+                    </div>
+                    <h3 class="project-title">${escapeHtml(proj.title)}</h3>
+                    <p class="project-desc">${escapeHtml(proj.description)}</p>
+                    <div class="project-tag">${escapeHtml(proj.category)}</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // 4. Values Section
+    if (data.values) {
+        const badgeEl = document.getElementById('valuesBadge');
+        const titleEl = document.getElementById('valuesTitle');
+        const descEl = document.getElementById('valuesDesc');
+        const track = document.getElementById('valuesTrack');
+
+        if (badgeEl) badgeEl.textContent = data.values.badge;
+        if (titleEl) titleEl.textContent = data.values.title;
+        if (descEl) descEl.textContent = data.values.description;
+
+        if (track && Array.isArray(data.values.items)) {
+            track.innerHTML = data.values.items.map((item, i) => `
+                <div class="value-card">
+                    <div class="value-card-header">
+                        <div class="value-icon">
+                            <i class="${valueIcons[i % valueIcons.length]}"></i>
+                        </div>
+                        <span class="value-tag">İlke 0${i + 1}</span>
+                    </div>
+                    <h3 class="value-title">${escapeHtml(item.title)}</h3>
+                    <p class="value-desc">${escapeHtml(item.description)}</p>
+                </div>
+            `).join('');
+        }
+    }
+}
+
 // Hero Slider - Dynamic & Modular
-document.addEventListener('DOMContentLoaded', () => {
+let heroSliderInterval = null;
+function initHeroSlider() {
     const slidesWrapper = document.getElementById('heroSlidesWrapper');
     const dotsContainer = document.getElementById('sliderDots');
     const prevBtn = document.getElementById('sliderPrev');
@@ -123,10 +313,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!slides.length) return;
     
     let currentSlide = 0;
-    let slideInterval = null;
-    const slideDuration = 5000; // 5 saniye otomatik geçiş
+    const slideDuration = 5000;
     
-    // Dynamically build / sync dots based on slide count
     if (dotsContainer) {
         dotsContainer.innerHTML = '';
         slides.forEach((slide, idx) => {
@@ -177,44 +365,42 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function startAutoSlide() {
         stopAutoSlide();
-        slideInterval = setInterval(nextSlide, slideDuration);
+        heroSliderInterval = setInterval(nextSlide, slideDuration);
     }
     
     function stopAutoSlide() {
-        if (slideInterval) {
-            clearInterval(slideInterval);
-            slideInterval = null;
+        if (heroSliderInterval) {
+            clearInterval(heroSliderInterval);
+            heroSliderInterval = null;
         }
     }
     
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        nextBtn.onclick = () => {
             nextSlide();
             startAutoSlide();
-        });
+        };
     }
     
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        prevBtn.onclick = () => {
             prevSlide();
             startAutoSlide();
-        });
+        };
     }
     
-    // Pause on hover
     if (sliderSection) {
-        sliderSection.addEventListener('mouseenter', stopAutoSlide);
-        sliderSection.addEventListener('mouseleave', startAutoSlide);
+        sliderSection.onmouseenter = stopAutoSlide;
+        sliderSection.onmouseleave = startAutoSlide;
         
-        // Touch swipe support for mobile
         let touchStartX = 0;
         let touchEndX = 0;
         
-        sliderSection.addEventListener('touchstart', (e) => {
+        sliderSection.ontouchstart = (e) => {
             touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+        };
         
-        sliderSection.addEventListener('touchend', (e) => {
+        sliderSection.ontouchend = (e) => {
             touchEndX = e.changedTouches[0].screenX;
             if (touchStartX - touchEndX > 50) {
                 nextSlide();
@@ -223,16 +409,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 prevSlide();
                 startAutoSlide();
             }
-        }, { passive: true });
+        };
     }
     
-    // Initialize
     showSlide(0);
     startAutoSlide();
-});
+}
+
 
 // Vision & Projects (Hedeflerimiz) Carousel Slider
-document.addEventListener('DOMContentLoaded', () => {
+function initProjectsCarousel() {
     const container = document.getElementById('projectsCarousel');
     const viewport = document.getElementById('projectsViewport');
     const track = document.getElementById('projectsTrack');
@@ -439,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Values & Principles (İlkelerimiz) Carousel Slider
-document.addEventListener('DOMContentLoaded', () => {
+function initValuesCarousel() {
     const container = document.getElementById('valuesCarousel');
     const viewport = document.getElementById('valuesViewport');
     const track = document.getElementById('valuesTrack');
@@ -643,6 +829,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial calculation and start
     calculateMetrics();
     startAutoPlay();
+}
+
+// Master Initialization for Dynamic Content
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const content = await fetchSiteContent();
+        if (content) {
+            applyDynamicContent(content);
+        }
+    } catch (e) {
+        console.error('Error applying dynamic content:', e);
+    }
+    
+    // Initialize Sliders & Carousels AFTER DOM layout is rendered
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            initHeroSlider();
+            initProjectsCarousel();
+            initValuesCarousel();
+        }, 50);
+    });
 });
 
 // Photo Gallery (Bento Carousel, Filtering & Lightbox Modal)

@@ -1,0 +1,138 @@
+{
+  "hero": [
+    {
+      "id": 1,
+      "badge": "Kurumsal Değerlerimiz & Liderlerimiz",
+      "title": "Cumhuriyetimizin Değerleri ve",
+      "highlightTitle": "Lider Ülke Türkiye Vizyonu",
+      "quote": "Milli ve kurumsal disiplinle, güçlü bir Türkiye ideali doğrultusunda milletimize ve İstanbul'umuza hizmet ediyoruz.",
+      "description": "Cumhuriyetimizin kurucusu Gazi Mustafa Kemal Atatürk'ün ilkeleri, Kurucu Liderimiz Alparslan Türkeş'in vizyonu ve Genel Başkanımız Sayın Dr. Devlet Bahçeli'nin liderliğinde çalışmalarımızı kararlılıkla sürdürüyoruz.",
+      "btn1Text": "İlkelerimiz & Vizyon",
+      "btn1Link": "#values",
+      "btn2Text": "Çalışma Programımız",
+      "btn2Link": "#vision"
+    },
+    {
+      "id": 2,
+      "badge": "Türkiye Yüzyılı & Şehir Vizyonu",
+      "title": "Milli Birlik, Kalkınma ve",
+      "highlightTitle": "Güçlü Gelecek",
+      "quote": "Önce ülkem ve milletim, sonra partim ve ben!",
+      "description": "İstanbul'un ekonomik ve sosyal kalkınması, vatandaşlarımızın huzuru ve refahı için teşkilatımızla birlikte planlı ve azimli bir şekilde çalışıyoruz.",
+      "btn1Text": "Projelerimiz",
+      "btn1Link": "#vision",
+      "btn2Text": "Özgeçmiş",
+      "btn2Link": "#about"
+    },
+    {
+      "id": 3,
+      "badge": "MHP İstanbul İl Başkan Yardımcısı",
+      "title": "İstanbul İçin",
+      "highlightTitle": "Kararlılık ve Hizmet",
+      "quote": "İstanbul'un her ilçesinde vatandaşlarımızla buluşuyor, şehrimizin ihtiyaçlarına akılcı ve kalıcı çözümler üretiyoruz.",
+      "description": "İl Başkanlığımızın koordinasyonunda, teşkilat mensuplarımızla birlikte İstanbul'umuzun geleceğini inşa etmek için sahadayız.",
+      "btn1Text": "Hakkında",
+      "btn1Link": "#about",
+      "btn2Text": "İletişime Geçin",
+      "btn2Link": "#contact"
+    }
+  ],
+  "about": {
+    "badge": "Özgeçmiş",
+    "title": "Hizmet ve Çalışma Hayatı",
+    "experienceYears": "20",
+    "experienceLabel": "Yıllık Hizmet",
+    "paragraphs": [
+      "1982 yılında Kars'ın Arpaçay ilçesinde dünyaya geldi. İlk, orta ve lise öğrenimini İstanbul'da tamamladı. Lisans eğitimine Anadolu Üniversitesi İşletme Fakültesinde devam etmektedir.",
+      "İş hayatında 2004 yılından itibaren özel güvenlik ve kurumsal hizmet sektörlerinde üst düzey yöneticilik ve girişimcilik faaliyetlerinde bulunarak, Pars Şirketler Grubu bünyesindeki Pars Security ve Pars Tunga firmalarının Yönetim Kurulu Başkanlığını yürütmektedir.",
+      "Uzun yıllardır Milliyetçi Hareket Partisi bünyesinde çeşitli kademelerde görev alan ÖZTÜRK, sivil toplum alanında Türk Dünyası Yardımlaşma ve Dayanışma Derneği (2021) ile TUDAK (2022) Genel Sekreterliği görevlerini üstlenmiştir. Halen Milliyetçi Hareket Partisi İstanbul İl Başkan Yardımcılığı görevini yürütmektedir. Evli ve 2 çocuk babasıdır."
+    ],
+    "cards": [
+      {
+        "title": "Pars Şirketler Grubu",
+        "role": "Yönetim Kurulu Bşk."
+      },
+      {
+        "title": "STK",
+        "role": "TUDAK Genel Sekreteri"
+      }
+    ]
+  },
+  "vision": {
+    "badge": "Çalışma Programı",
+    "title": "Modern ve Güçlü İstanbul İçin Projelerimiz",
+    "description": "İstanbul'un ekonomik rekabet gücünü artırmak, afetlere dirençli modern şehircilik altyapısını kurmak ve hemşehrilerimizin yaşam kalitesini yükseltmek için hazırlanan kurumsal vizyonumuz.",
+    "projects": [
+      {
+        "id": 1,
+        "title": "Üretken Belediyecilik & Yerel Sanayi",
+        "category": "Ekonomi & İstihdam",
+        "description": "Yerel üreticilerin desteklenmesi, organize sanayi ve teknoloji bölgelerinin güçlendirilmesi, istihdam alanlarının genişletilmesi ve KOBİ'lerimizin rekabet gücünü artıracak teşvik mekanizmaları."
+      },
+      {
+        "id": 2,
+        "title": "Kırsal Kalkınma & Güvenli Gıda Arzı",
+        "category": "Kırsal Kalkınma & Üretim",
+        "description": "İstanbul'un çeper ilçelerindeki tarım ve hayvancılık alanlarının korunması, modern tarım teknolojilerinin desteklenmesi ve şehrin gıda tedarik zincirinin sürdürülebilir kılınması."
+      },
+      {
+        "id": 3,
+        "title": "Gençlik, Eğitim ve İnovasyon Merkezleri",
+        "category": "Eğitim & Gençlik",
+        "description": "Gençlerimizin çağdaş eğitim imkanlarına, teknoloji ve inovasyon atölyelerine erişiminin artırılması; donanımlı, yabancı dil bilen ve geleceğe hazır nesiller yetiştirilmesi."
+      },
+      {
+        "id": 4,
+        "title": "Deprem Direnci & Kentsel Dönüşüm",
+        "category": "Kentsel Dönüşüm & Güvenlik",
+        "description": "Olası İstanbul depremine karşı bilimsel ve planlı kentsel dönüşümün hızlandırılması, riskli yapı stokunun yenilenmesi ve kapsamlı afet lojistik merkezlerinin kurulması."
+      },
+      {
+        "id": 5,
+        "title": "Sosyal Dayanışma & Aile Destek Hizmetleri",
+        "category": "Sosyal Hizmetler",
+        "description": "Toplumun temel direği olan aile kurumunun desteklenmesi; dar gelirli vatandaşlarımıza, şehit ve gazi ailelerimize, engellilere yönelik etkin ve hakkaniyetli sosyal hizmet ağı."
+      },
+      {
+        "id": 6,
+        "title": "Entegre Ulaşım & Akıllı Trafik Sistemleri",
+        "category": "Ulaşım & Altyapı",
+        "description": "Raylı sistem ağlarının birbirine entegre edilmesi, modern transfer merkezleri, katlı otopark projeleri ve akıllı sinyalizasyon sistemleri ile şehir içi trafiğin kalıcı olarak rahatlatılması."
+      },
+      {
+        "id": 7,
+        "title": "Tarihi Mirasın Korunması & Kültür-Sanat",
+        "category": "Kültür & Turizm",
+        "description": "İstanbul'un binlerce yıllık tarihi ve mimari mirasının aslına uygun restorasyonu, çağdaş kütüphaneler ve kültür merkezleri ile şehrin kültürel zenginliğinin güçlendirilmesi."
+      },
+      {
+        "id": 8,
+        "title": "Sürdürülebilir Çevre, Yeşil Alanlar & Sıfır Atık",
+        "category": "Çevre & Şehircilik",
+        "description": "Millet bahçeleri ve yeşil koridorların genişletilmesi, sıfır atık projelerinin teşvik edilmesi, su kaynaklarının ve kıyı ekosisteminin titizlikle korunması."
+      }
+    ]
+  },
+  "values": {
+    "badge": "İlkelerimiz",
+    "title": "Hizmet Anlayışımızın Temel Taşları",
+    "description": "Çalışmalarımızda temel aldığımız milli, ahlaki ve kurumsal değerler.",
+    "items": [
+      {
+        "id": 1,
+        "title": "Milli Birlik ve Beraberlik",
+        "description": "Toplumsal dayanışmayı güçlendiren, vatan ve millet sevgisini her şeyin üstünde tutan bir yaklaşım."
+      },
+      {
+        "id": 2,
+        "title": "Üretken ve Şeffaf Belediyecilik",
+        "description": "Halka hizmette dürüstlük, kaynakların adil kullanımı ve hesap verebilirlik ilkesi."
+      },
+      {
+        "id": 3,
+        "title": "Liyakat ve Adalet",
+        "description": "Şehrimizin yönetiminde işin ehline verilmesi ve tüm vatandaşlarımıza eşit hizmet sunulması."
+      }
+    ]
+  }
+}
