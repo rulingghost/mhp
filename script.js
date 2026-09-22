@@ -630,7 +630,7 @@ function initProjectsCarousel() {
     // Initial calculation and start
     calculateMetrics();
     startAutoPlay();
-});
+}
 
 // Values & Principles (İlkelerimiz) Carousel Slider
 function initValuesCarousel() {
