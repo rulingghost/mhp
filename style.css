@@ -1163,7 +1163,6 @@ img {
 
 .values-nav-btn.disabled {
     opacity: 0.35;
-    pointer-events: none;
 }
 
 .values-prev {

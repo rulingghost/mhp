@@ -120,18 +120,48 @@
     "items": [
       {
         "id": 1,
-        "title": "Milli Birlik ve Beraberlik",
-        "description": "Toplumsal dayanışmayı güçlendiren, vatan ve millet sevgisini her şeyin üstünde tutan bir yaklaşım."
+        "title": "Milliyetçilik",
+        "description": "Türk milletinin egemenliğini, milli menfaatlerini ve vatanımızın bölünmez bütünlüğünü her şeyin üstünde tutan; birlik ve beraberliği savunan temel ilke."
       },
       {
         "id": 2,
-        "title": "Üretken ve Şeffaf Belediyecilik",
-        "description": "Halka hizmette dürüstlük, kaynakların adil kullanımı ve hesap verebilirlik ilkesi."
+        "title": "Ülkücülük",
+        "description": "Milletimizi muasır medeniyet seviyesinin üzerine çıkarma, güçlü, üretken, adil ve dünyada saygın bir Türkiye inşa etme ideali."
       },
       {
         "id": 3,
-        "title": "Liyakat ve Adalet",
-        "description": "Şehrimizin yönetiminde işin ehline verilmesi ve tüm vatandaşlarımıza eşit hizmet sunulması."
+        "title": "Ahlakçılık",
+        "description": "Kamu yönetiminde ve toplumsal hayatta dürüstlük, liyakat, adalet ve şeffaflığı esas alan; kurumsal sorumluluk bilinciyle hareket etme anlayışı."
+      },
+      {
+        "id": 4,
+        "title": "İlimcilik",
+        "description": "Gelişmenin ve ilerlemenin anahtarı olarak müspet ilmi, araştırmayı, aklı ve yüksek teknolojiyi politikaların merkezine yerleştirme kararlılığı."
+      },
+      {
+        "id": 5,
+        "title": "Toplumculuk",
+        "description": "Toplumsal adaleti, fırsat eşitliğini ve sosyal güvenliği sağlayan; sınıf ayrımı gözetmeksizin millet fertlerinin topyekün refahını hedefleyen dayanışma modeli."
+      },
+      {
+        "id": 6,
+        "title": "Köycülük",
+        "description": "Kırsal kalkınmayı destekleyen, tarımsal üretimi modernize eden ve üreticimizin ekonomik refahını yükselterek yerinde kalkınmayı sağlayan vizyon."
+      },
+      {
+        "id": 7,
+        "title": "Hürriyetçilik ve Şahsiyetçilik",
+        "description": "Temel hak ve özgürlüklere saygılı, hukukun üstünlüğüne bağlı, milli iradeye dayalı ve özgür düşünebilen liyakatli bireylerden oluşan bir toplum."
+      },
+      {
+        "id": 8,
+        "title": "Gelişmecilik ve Halkçılık",
+        "description": "Milli ve kültürel değerlerimizi koruyarak çağın şartlarına hızla uyum sağlayan, vatandaşın talep ve ihtiyaçlarını doğrudan yönetime yansıtan reformcu yaklaşım."
+      },
+      {
+        "id": 9,
+        "title": "Endüstricilik ve Teknikçilik",
+        "description": "Milli savunma sanayiinden sivil üretime kadar yüksek katma değerli ileri teknoloji ve sanayi altyapısıyla tam ekonomik bağımsızlığı sağlama hedefi."
       }
     ]
   }

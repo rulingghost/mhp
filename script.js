@@ -299,6 +299,9 @@ function applyDynamicContent(data) {
                     <p class="value-desc">${escapeHtml(item.description)}</p>
                 </div>
             `).join('');
+            requestAnimationFrame(() => {
+                initValuesCarousel();
+            });
         }
     }
 }
@@ -640,9 +643,6 @@ function initValuesCarousel() {
     
     if (!container || !viewport || !track) return;
     
-    const cards = track.querySelectorAll('.value-card');
-    if (!cards.length) return;
-    
     let currentIndex = 0;
     let maxIndex = 0;
     let cardStep = 0;
@@ -650,6 +650,9 @@ function initValuesCarousel() {
     const autoPlayInterval = 5000;
     
     function calculateMetrics() {
+        const cards = track.querySelectorAll('.value-card');
+        if (!cards.length) return;
+
         const viewportWidth = viewport.clientWidth;
         const firstCard = cards[0];
         const cardWidth = firstCard.offsetWidth;
@@ -663,6 +666,22 @@ function initValuesCarousel() {
         if (currentIndex > maxIndex) {
             currentIndex = maxIndex;
         }
+
+        if (maxIndex <= 0) {
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (dotsContainer) dotsContainer.style.display = 'none';
+        } else {
+            if (prevBtn) {
+                prevBtn.style.display = 'flex';
+                prevBtn.classList.remove('disabled');
+            }
+            if (nextBtn) {
+                nextBtn.style.display = 'flex';
+                nextBtn.classList.remove('disabled');
+            }
+            if (dotsContainer) dotsContainer.style.display = 'flex';
+        }
         
         renderDots();
         updateSliderPosition(false);
@@ -671,6 +690,7 @@ function initValuesCarousel() {
     function renderDots() {
         if (!dotsContainer) return;
         dotsContainer.innerHTML = '';
+        if (maxIndex <= 0) return;
         const totalDots = maxIndex + 1;
         
         for (let i = 0; i < totalDots; i++) {
@@ -678,10 +698,10 @@ function initValuesCarousel() {
             dot.className = `v-dot ${i === currentIndex ? 'active' : ''}`;
             dot.dataset.index = i;
             dot.title = `İlke Grubu ${i + 1}`;
-            dot.addEventListener('click', () => {
+            dot.onclick = () => {
                 goToIndex(i);
                 startAutoPlay();
-            });
+            };
             dotsContainer.appendChild(dot);
         }
     }
@@ -708,22 +728,17 @@ function initValuesCarousel() {
         const offset = currentIndex * cardStep;
         track.style.transform = `translateX(-${offset}px)`;
         
-        if (prevBtn) {
-            prevBtn.classList.toggle('disabled', currentIndex === 0);
-        }
-        if (nextBtn) {
-            nextBtn.classList.toggle('disabled', currentIndex >= maxIndex);
-        }
-        
         updateDots();
     }
     
     function goToIndex(index) {
+        if (maxIndex <= 0) return;
         currentIndex = Math.max(0, Math.min(index, maxIndex));
         updateSliderPosition(true);
     }
     
     function nextValues() {
+        if (maxIndex <= 0) return;
         if (currentIndex >= maxIndex) {
             goToIndex(0);
         } else {
@@ -732,6 +747,7 @@ function initValuesCarousel() {
     }
     
     function prevValues() {
+        if (maxIndex <= 0) return;
         if (currentIndex <= 0) {
             goToIndex(maxIndex);
         } else {
@@ -741,7 +757,9 @@ function initValuesCarousel() {
     
     function startAutoPlay() {
         stopAutoPlay();
-        autoPlayTimer = setInterval(nextValues, autoPlayInterval);
+        if (maxIndex > 0) {
+            autoPlayTimer = setInterval(nextValues, autoPlayInterval);
+        }
     }
     
     function stopAutoPlay() {
@@ -752,22 +770,24 @@ function initValuesCarousel() {
     }
     
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        nextBtn.onclick = (e) => {
+            e.preventDefault();
             nextValues();
             startAutoPlay();
-        });
+        };
     }
     
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        prevBtn.onclick = (e) => {
+            e.preventDefault();
             prevValues();
             startAutoPlay();
-        });
+        };
     }
     
     // Pause on hover
-    container.addEventListener('mouseenter', stopAutoPlay);
-    container.addEventListener('mouseleave', startAutoPlay);
+    container.onmouseenter = stopAutoPlay;
+    container.onmouseleave = startAutoPlay;
     
     // Drag and Touch Support
     let isDragging = false;
