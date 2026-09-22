@@ -874,8 +874,10 @@
             showToast('error', 'Oturum Süresi Doldu', 'Lütfen tekrar giriş yapınız.');
             setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
           } else if (result.needsDatabase) {
-            showToast('error', 'Veritabanı Gerekli', 'Vercel üzerinde kalıcılık için Vercel KV gereklidir.');
-            openKvHelpModal();
+            showToast('error', 'Veritabanı Uyarısı', result.message || 'Kalıcı veritabanı bağlantısı henüz aktifleşmedi.');
+            if (!result.message || !result.message.toLowerCase().includes('supabase')) {
+              openKvHelpModal();
+            }
           } else {
             showToast('error', 'Kaydetme Hatası', result.message || 'Veri kaydedilemedi.');
           }

@@ -27,19 +27,24 @@ async function readFromSupabase(supabaseUrl, supabaseKey) {
     if (res.ok) {
       const rows = await res.json();
       if (Array.isArray(rows) && rows.length > 0 && rows[0].data) {
-        return typeof rows[0].data === 'string' ? JSON.parse(rows[0].data) : rows[0].data;
+        const parsed = typeof rows[0].data === 'string' ? JSON.parse(rows[0].data) : rows[0].data;
+        return { ok: true, data: parsed };
       }
+      return { ok: true, data: null };
     }
+    const errText = await res.text();
+    console.warn('Supabase read error details:', res.status, errText);
+    return { ok: false, error: errText, status: res.status };
   } catch (e) {
-    console.warn('Supabase read error:', e.message);
+    console.warn('Supabase read error exception:', e.message);
+    return { ok: false, error: e.message };
   }
-  return null;
 }
 
 async function saveToSupabase(supabaseUrl, supabaseKey, content) {
   try {
     const cleanUrl = supabaseUrl.replace(/\/$/, '');
-    const res = await fetch(`${cleanUrl}/rest/v1/site_content`, {
+    const res = await fetch(`${cleanUrl}/rest/v1/site_content?on_conflict=id`, {
       method: 'POST',
       headers: {
         'apikey': supabaseKey,
@@ -49,11 +54,16 @@ async function saveToSupabase(supabaseUrl, supabaseKey, content) {
       },
       body: JSON.stringify({ id: 'main', data: content })
     });
-    return res.ok;
+    if (res.ok) {
+      return { ok: true };
+    }
+    const errText = await res.text();
+    console.error('Supabase save error details:', res.status, errText);
+    return { ok: false, status: res.status, error: errText };
   } catch (e) {
-    console.warn('Supabase save error:', e.message);
+    console.error('Supabase save error exception:', e.message);
+    return { ok: false, error: e.message };
   }
-  return false;
 }
 
 /**
@@ -151,10 +161,20 @@ async function readContent() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
   if (supabaseUrl && supabaseKey) {
-    const supaData = await readFromSupabase(supabaseUrl, supabaseKey);
-    if (supaData) {
-      memoryCache = supaData;
-      return { content: supaData, storageType: 'supabase' };
+    const supa = await readFromSupabase(supabaseUrl, supabaseKey);
+    if (supa && supa.ok && supa.data) {
+      memoryCache = supa.data;
+      return { content: supa.data, storageType: 'supabase' };
+    }
+    // If Supabase connection succeeded but table is empty, fall back to local file but treat as Supabase connected
+    if (supa && supa.ok && !supa.data) {
+      try {
+        if (fs.existsSync(localFilePath)) {
+          const data = JSON.parse(fs.readFileSync(localFilePath, 'utf8'));
+          memoryCache = data;
+          return { content: data, storageType: 'supabase' };
+        }
+      } catch (e) {}
     }
   }
 
@@ -205,15 +225,18 @@ async function readContent() {
 async function saveContent(content) {
   let savedToRemoteDb = false;
   let remoteType = null;
+  let remoteError = null;
 
   // 1. Try Supabase
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
   if (supabaseUrl && supabaseKey) {
-    const ok = await saveToSupabase(supabaseUrl, supabaseKey, content);
-    if (ok) {
+    const supaResult = await saveToSupabase(supabaseUrl, supabaseKey, content);
+    if (supaResult && supaResult.ok) {
       savedToRemoteDb = true;
       remoteType = 'supabase';
+    } else {
+      remoteError = supaResult ? supaResult.error : 'Supabase bağlantı hatası';
     }
   }
 
@@ -251,10 +274,23 @@ async function saveContent(content) {
   // If on Vercel AND no database is connected:
   const isVercel = !!process.env.VERCEL;
   if (isVercel && !savedToRemoteDb) {
+    let failureMsg = 'Vercel üzerinde kalıcı veritabanı bağlantısı henüz aktifleşmemiş!';
+    if (supabaseUrl && supabaseKey) {
+      if (remoteError && (remoteError.includes('does not exist') || remoteError.includes('42P01'))) {
+        failureMsg = 'Supabase üzerinde "site_content" tablosu bulunamadı! Lütfen Supabase SQL Editor alanında projedeki schema.sql dosyasını çalıştırın.';
+      } else if (remoteError && (remoteError.includes('JWT') || remoteError.includes('apikey') || remoteError.includes('401') || remoteError.includes('403'))) {
+        failureMsg = 'Supabase API anahtarı (SUPABASE_KEY) veya URL yetkilendirmesi başarısız oldu. Lütfen Vercel değişkenlerini kontrol edin.';
+      } else {
+        failureMsg = `Supabase kayıt hatası: ${remoteError || 'Bilinmeyen hata'}. Supabase SQL Editor'da schema.sql kodunu çalıştırdığınızdan emin olun.`;
+      }
+    } else {
+      failureMsg = 'Vercel ortam değişkenleri henüz bu dağıtımda aktifleşmemiş. Lütfen Vercel panelinden projenizi Redeploy edin.';
+    }
+
     return {
       success: false,
       needsDatabase: true,
-      message: 'Vercel üzerinde kalıcı veritabanı (Vercel KV veya Supabase) henüz bağlanmamış! Vercel sunucusuz mimarisinde verilerin canlıda kalıcı olması için veritabanı bağlantısı zorunludur. Lütfen Vercel Dashboard > Storage > Create KV oluşturup projenize bağlayın.'
+      message: failureMsg
     };
   }
 
@@ -268,9 +304,11 @@ async function saveContent(content) {
   return {
     success: true,
     storageType: remoteType || 'local_file',
-    message: remoteType 
-      ? `Değişiklikler ${remoteType === 'vercel_kv' ? 'Vercel KV' : 'Supabase'} veritabanına başarıyla kaydedildi ve anında yayına alındı.` 
-      : 'Değişiklikler başarıyla kaydedildi.'
+    message: remoteType === 'supabase'
+      ? 'Değişiklikler Supabase veritabanına başarıyla kaydedildi ve anında yayına alındı.'
+      : remoteType === 'vercel_kv'
+        ? 'Değişiklikler Vercel KV veritabanına başarıyla kaydedildi ve anında yayına alındı.'
+        : 'Değişiklikler başarıyla kaydedildi.'
   };
 }
 
