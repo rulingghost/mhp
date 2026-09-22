@@ -12,14 +12,31 @@ const tmpFilePath = path.join('/tmp', 'site-content.json');
 /**
  * Storage Helpers - Supabase
  */
+function sanitizeSupabaseUrl(rawUrl) {
+  if (!rawUrl) return '';
+  let str = String(rawUrl).trim();
+  // Handle markdown links like [https://...](https://...) or wrapped quotes/brackets
+  const match = str.match(/https?:\/\/[^\s\)\'\"\]]+/);
+  if (match) {
+    str = match[0];
+  }
+  return str.replace(/\/+$/, '');
+}
+
+function sanitizeSupabaseKey(rawKey) {
+  if (!rawKey) return '';
+  return String(rawKey).trim().replace(/^["']|["']$/g, '');
+}
+
 async function readFromSupabase(supabaseUrl, supabaseKey) {
   try {
-    const cleanUrl = supabaseUrl.replace(/\/$/, '');
+    const cleanUrl = sanitizeSupabaseUrl(supabaseUrl);
+    const cleanKey = sanitizeSupabaseKey(supabaseKey);
     const res = await fetch(`${cleanUrl}/rest/v1/site_content?id=eq.main&select=data`, {
       method: 'GET',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        'apikey': cleanKey,
+        'Authorization': `Bearer ${cleanKey}`,
         'Accept': 'application/json'
       },
       cache: 'no-store'
@@ -43,12 +60,13 @@ async function readFromSupabase(supabaseUrl, supabaseKey) {
 
 async function saveToSupabase(supabaseUrl, supabaseKey, content) {
   try {
-    const cleanUrl = supabaseUrl.replace(/\/$/, '');
+    const cleanUrl = sanitizeSupabaseUrl(supabaseUrl);
+    const cleanKey = sanitizeSupabaseKey(supabaseKey);
     const res = await fetch(`${cleanUrl}/rest/v1/site_content?on_conflict=id`, {
       method: 'POST',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+        'apikey': cleanKey,
+        'Authorization': `Bearer ${cleanKey}`,
         'Content-Type': 'application/json',
         'Prefer': 'resolution=merge-duplicates'
       },
@@ -158,8 +176,8 @@ async function saveToKv(kvUrl, kvToken, content) {
  */
 async function readContent() {
   // 1. Try Supabase
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const supabaseUrl = sanitizeSupabaseUrl(process.env.SUPABASE_URL);
+  const supabaseKey = sanitizeSupabaseKey(process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY);
   if (supabaseUrl && supabaseKey) {
     const supa = await readFromSupabase(supabaseUrl, supabaseKey);
     if (supa && supa.ok && supa.data) {
@@ -228,8 +246,8 @@ async function saveContent(content) {
   let remoteError = null;
 
   // 1. Try Supabase
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const supabaseUrl = sanitizeSupabaseUrl(process.env.SUPABASE_URL);
+  const supabaseKey = sanitizeSupabaseKey(process.env.SUPABASE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY);
   if (supabaseUrl && supabaseKey) {
     const supaResult = await saveToSupabase(supabaseUrl, supabaseKey, content);
     if (supaResult && supaResult.ok) {
