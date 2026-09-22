@@ -156,7 +156,10 @@ function escapeHtml(text) {
 
 async function fetchSiteContent() {
     try {
-        const response = await fetch('/api/content');
+        const response = await fetch(`/api/content?_t=${Date.now()}`, {
+            cache: 'no-store',
+            headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
+        });
         if (response.ok) {
             return await response.json();
         }
@@ -165,7 +168,9 @@ async function fetchSiteContent() {
     }
 
     try {
-        const fallbackRes = await fetch('data/site-content.json');
+        const fallbackRes = await fetch(`data/site-content.json?_t=${Date.now()}`, {
+            cache: 'no-store'
+        });
         if (fallbackRes.ok) {
             return await fallbackRes.json();
         }

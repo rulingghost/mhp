@@ -104,9 +104,12 @@
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Sayfa İçeriklerini Düzenle</h2>
           <p class="text-sm text-slate-400 mt-1">Sadece aşağıdaki 4 bölümün metin içeriklerini dinamik olarak yönetebilirsiniz.</p>
         </div>
-        <div id="saveStatusIndicator" class="text-xs text-slate-400 flex items-center gap-1.5">
-          <i class="fas fa-circle text-[8px] text-emerald-500"></i>
-          <span>Tüm değişiklikler güncel</span>
+        <div class="flex flex-wrap items-center gap-3">
+          <div id="dbStatusBadge" class="hidden text-xs"></div>
+          <div id="saveStatusIndicator" class="text-xs text-slate-400 flex items-center gap-1.5">
+            <i class="fas fa-circle text-[8px] text-emerald-500"></i>
+            <span>Tüm değişiklikler güncel</span>
+          </div>
         </div>
       </div>
 
@@ -480,11 +483,12 @@
     // 2. Load Content
     async function loadContent() {
       try {
-        const res = await fetch('/api/content');
+        const res = await fetch(`/api/content?_t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) {
           throw new Error('İçerik API yanıt vermedi.');
         }
         siteData = await res.json();
+        updateDbStatus(siteData._storageType);
         populateForm(siteData);
         
         document.getElementById('initialLoader').classList.add('hidden');
@@ -492,6 +496,20 @@
       } catch (err) {
         console.error('Fetch error:', err);
         showToast('error', 'Hata', 'İçerik yüklenirken bir problem oluştu.');
+      }
+    }
+
+    function updateDbStatus(type) {
+      const badge = document.getElementById('dbStatusBadge');
+      if (!badge) return;
+      badge.classList.remove('hidden');
+
+      if (type === 'vercel_kv') {
+        badge.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-700/80"><i class="fas fa-database text-emerald-400"></i> Vercel KV Bağlı (Kalıcı)</span>`;
+      } else if (type === 'supabase') {
+        badge.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-700/80"><i class="fas fa-database text-emerald-400"></i> Supabase Bağlı (Kalıcı)</span>`;
+      } else {
+        badge.innerHTML = `<button type="button" onclick="openKvHelpModal()" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-950/90 hover:bg-amber-900 text-amber-300 border border-amber-600/90 transition cursor-pointer shadow-sm animate-pulse" title="Tıkla ve 30 saniyede KV bağla"><i class="fas fa-exclamation-triangle text-amber-400"></i> Veritabanı Bağlı Değil (Bağlamak İçin Tıkla)</button>`;
       }
     }
 
@@ -845,13 +863,19 @@
         const result = await res.json();
 
         if (res.ok && result.success) {
-          showToast('success', 'Başarılı!', 'Tüm değişiklikler kaydedildi ve sitede yayına alındı.');
+          showToast('success', 'Başarılı!', result.message || 'Tüm değişiklikler kaydedildi ve sitede yayına alındı.');
           const now = new Date();
           statusIndicator.innerHTML = `<i class="fas fa-check text-emerald-500 text-[10px]"></i> Son kayıt: ${now.toLocaleTimeString('tr-TR')}`;
+          if (result.storageType) {
+            updateDbStatus(result.storageType);
+          }
         } else {
           if (res.status === 401) {
             showToast('error', 'Oturum Süresi Doldu', 'Lütfen tekrar giriş yapınız.');
             setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+          } else if (result.needsDatabase) {
+            showToast('error', 'Veritabanı Gerekli', 'Vercel üzerinde kalıcılık için Vercel KV gereklidir.');
+            openKvHelpModal();
           } else {
             showToast('error', 'Kaydetme Hatası', result.message || 'Veri kaydedilemedi.');
           }
@@ -878,8 +902,58 @@
         .replace(/'/g, '&#039;');
     }
 
+    // Modal helpers
+    function openKvHelpModal() {
+      document.getElementById('kvHelpModal')?.classList.remove('hidden');
+    }
+    function closeKvHelpModal() {
+      document.getElementById('kvHelpModal')?.classList.add('hidden');
+    }
+
     // Init
     loadContent();
   </script>
+
+  <!-- KV CONNECTION HELP MODAL -->
+  <div id="kvHelpModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fas fa-database text-amber-400"></i>
+          <span>Vercel KV Veritabanını Bağlama (30 Saniye)</span>
+        </h3>
+        <button type="button" onclick="closeKvHelpModal()" class="text-slate-400 hover:text-white transition">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Vercel sunucusuz (serverless) mimaride diske dosya yazılmasına izin vermez. Değişikliklerin canlı sitede kalıcı kalması için <strong>ücretsiz Vercel KV</strong> veritabanını projenize bağlamanız yeterlidir:
+      </p>
+
+      <ol class="space-y-3 text-xs text-slate-300">
+        <li class="flex items-start gap-2.5 p-2.5 bg-slate-800/60 rounded-xl">
+          <span class="w-5 h-5 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+          <span><strong><a href="https://vercel.com" target="_blank" class="text-red-400 underline">Vercel Dashboard</a></strong>'a girip projenizi seçin ve üst menüden <strong>Storage</strong> sekmesine tıklayın.</span>
+        </li>
+        <li class="flex items-start gap-2.5 p-2.5 bg-slate-800/60 rounded-xl">
+          <span class="w-5 h-5 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+          <span><strong>Create Database</strong> butonuna basıp <strong>KV (Serverless Redis by Upstash)</strong> seçeneğini seçip oluşturun.</span>
+        </li>
+        <li class="flex items-start gap-2.5 p-2.5 bg-slate-800/60 rounded-xl">
+          <span class="w-5 h-5 rounded-full bg-red-600 text-white font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+          <span>Oluşturduktan sonra <strong>Connect Project</strong> butonuna basarak projenize bağlayın.</span>
+        </li>
+      </ol>
+
+      <div class="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded-xl text-[11px] text-emerald-300">
+        <i class="fas fa-check-circle mr-1"></i> Vercel tüm bağlantı değişkenlerini projenize otomatik tanımlar. Başka hiçbir koda dokunmanıza gerek kalmaz!
+      </div>
+
+      <button type="button" onclick="closeKvHelpModal()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition">
+        Anladım, Kapat
+      </button>
+    </div>
+  </div>
 </body>
 </html>
